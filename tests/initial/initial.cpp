@@ -3,8 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "dehancer/interpolator.hpp"
-#include "dehancer/vectors.hpp"
+#include "dehancer/math.hpp"
 #include <memory>
 
 TEST(Initial, IitialTest) {
@@ -29,7 +28,7 @@ TEST(Initial, IitialTest) {
 
     std::cout << "Armadillo equation inv solution: \n" << xx << "\n < \n"<<  (xx == x) << std::endl;
 
-    deahncer::math::float2 f = {1,2};
+    dehancer::math::float2 f = {1,2};
 
     f.x  = 1;
     f.y /= 2;
@@ -39,10 +38,10 @@ TEST(Initial, IitialTest) {
 
     std::cout << "Armadillo multiple: \n" << a << std::endl;
 
-    deahncer::math::float3 f3 = {1,2,1};
+    dehancer::math::float3 f3 = {1,2,1};
 
     auto a3x3 = f3*f3.t();
 
     std::cout << "Armadillo multiple 3x3: \n" << a3x3 << std::endl;
 
-};
+}

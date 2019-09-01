@@ -7,7 +7,7 @@
 #include <armadillo>
 #include "dehancer/properties.hpp"
 
-namespace deahncer {
+namespace dehancer {
 
     namespace math {
 

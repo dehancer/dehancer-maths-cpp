@@ -8,7 +8,7 @@ else()
 endif()
 
 file(GLOB TESTS_SOURCES ${TESTS_SOURCES}
-        ./*.cc
+        ./*.cpp
         )
 
 add_executable(${TEST} ${TESTS_SOURCES})

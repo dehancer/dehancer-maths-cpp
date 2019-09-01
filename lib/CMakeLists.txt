@@ -10,7 +10,7 @@ include_directories(
 )
 
 FILE(GLOB PUBLIC_INCLUDE_FILES
-        ${CMAKE_SOURCE_DIR}/include/dehancer/*.h
+        ${CMAKE_SOURCE_DIR}/include/dehancer/*.hpp
         )
 
 FILE(GLOB INCLUDE_FILES

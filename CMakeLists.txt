@@ -58,6 +58,9 @@ endif(CCACHE_FOUND)
 #
 # Compiler settings
 #
+
+set(CMAKE_CXX_FLAGS "-fdeclspec -fms-extensions")
+
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
     message(STATUS "Using Clang" )

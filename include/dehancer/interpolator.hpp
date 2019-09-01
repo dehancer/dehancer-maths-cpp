@@ -8,7 +8,18 @@
 #include <armadillo>
 
 namespace deahncer{
+
     namespace math {
+
+        namespace protocol {
+            class Interpolator {
+
+            };
+        }
+
+        class Interpolator: public protocol::Interpolator {
+
+        };
 
     }
 }

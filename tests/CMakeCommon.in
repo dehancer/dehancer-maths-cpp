@@ -1,0 +1,33 @@
+set(TEST_LIBRARIES)
+
+if (GTEST_FOUND)
+    include_directories(${GTEST_INCLUDE_DIRS})
+    set(TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES})
+else()
+    set(TEST_LIBRARIES gtest;gtest_main)
+endif()
+
+file(GLOB TESTS_SOURCES ${TESTS_SOURCES}
+        ./*.cc
+        )
+
+add_executable(${TEST} ${TESTS_SOURCES})
+
+target_link_libraries(
+        ${TEST}
+        ${PROJECT_LIB}
+        ${TEST_LIBRARIES}
+        ${COMMON_LIBRARIES}
+)
+
+if (COMMON_DEPENDECIES)
+    message(STATUS "${TEST} DEPENDECIES: ${COMMON_DEPENDECIES}")
+    add_dependencies(
+            ${TEST}
+            ${COMMON_DEPENDECIES}
+    )
+endif ()
+
+add_test(test ${TEST})
+enable_testing()
+

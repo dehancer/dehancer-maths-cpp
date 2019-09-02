@@ -22,14 +22,17 @@ namespace dehancer {
         public:
             using armfloat2::armfloat2;
 
-            PROPERTY(float,x);
-            PROPERTY(float,y);
+            DEFINE_PROPERTY(x,
+                            float, float2,
+                            { return (*self)(0) = value; }, // setter
+                            { return (*self)(0); }          // getter
+            );
 
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
-
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            DEFINE_PROPERTY(y,
+                            float, float2,
+                            { return (*self)(1) = value; }, // setter
+                            { return (*self)(1); }          // getter
+            );
         };
 
         class float3: public arma::fvec::fixed<3> {
@@ -39,18 +42,24 @@ namespace dehancer {
         public:
             using armfloat3::armfloat3;
 
-            PROPERTY(float,x);
-            PROPERTY(float,y);
-            PROPERTY(float,z);
+            DEFINE_PROPERTY(x,
+                            float, float3,
+                            { return (*self)(0) = value; }, // setter
+                            { return (*self)(0); }          // getter
+            );
 
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
+            DEFINE_PROPERTY(y,
+                            float, float3,
+                            { return (*self)(1) = value; }, // setter
+                            { return (*self)(1); }          // getter
+            );
 
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            DEFINE_PROPERTY(z,
+                            float, float3,
+                            { return (*self)(2) = value; }, // setter
+                            { return (*self)(2); }          // getter
+            );
 
-            GET(z) { return (*this)(2); }
-            SET(z) { (*this)(2) = value;}
         };
 
         class float4: public arma::fvec::fixed<4> {
@@ -60,22 +69,29 @@ namespace dehancer {
         public:
             using armfloat4::armfloat4;
 
-            PROPERTY(float,x);
-            PROPERTY(float,y);
-            PROPERTY(float,z);
-            PROPERTY(float,w);
+            DEFINE_PROPERTY(x,
+                            float, float4,
+                            { return (*self)(0) = value; }, // setter
+                            { return (*self)(0); }            // getter
+            );
 
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
+            DEFINE_PROPERTY(y,
+                            float, float4,
+                            { return (*self)(1) = value; }, // setter
+                            { return (*self)(1); }            // getter
+            );
 
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            DEFINE_PROPERTY(z,
+                            float, float4,
+                            { return (*self)(2) = value; }, // setter
+                            { return (*self)(2); }            // getter
+            );
 
-            GET(z) { return (*this)(2); }
-            SET(z) { (*this)(2) = value;}
-
-            GET(w) { return (*this)(3); }
-            SET(w) { (*this)(3) = value;}
+            DEFINE_PROPERTY(w,
+                            float, float4,
+                            { return (*self)(3) = value; }, // setter
+                            { return (*self)(3); }            // getter
+            );
         };
     }
 }

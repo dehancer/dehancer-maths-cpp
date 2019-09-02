@@ -29,10 +29,10 @@ namespace dehancer{
                     friend std::ostream& operator<<(std::ostream& os, const __controls__ & controls);
                 } controls;
 
-                READONLY_PROPERTY(size_t,resolution);
-                GET(resolution) {
-                    return resolution_;
-                }
+                DEFINE_READONLY_PROPERTY(resolution,
+                                         size_t, Interpolator,
+                                         { return self->resolution_; } // getter
+                );
 
                 Interpolator(size_t resolution = 256):resolution_(resolution){};
                 virtual float value(float x) const = 0;
@@ -47,10 +47,13 @@ namespace dehancer{
 
         public:
             using protocol::Interpolator::Interpolator;
-            READONLY_PROPERTY(size_t,step);
-            GET(step) {
-                return 1.0f/this->resolution;
-            }
+
+            DEFINE_READONLY_PROPERTY(step,
+                                     float, Interpolator,
+                                     { return 1.0f/self->resolution; } // getter
+            );
+
+            virtual float value(float x) const { return 0; };
         };
 
     }

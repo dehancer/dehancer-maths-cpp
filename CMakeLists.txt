@@ -33,6 +33,7 @@ file (WRITE "${VERSION_FILE}" "${PROJECT_NAME} ${PROJECT_VERSION}")
 find_package (PkgConfig QUIET)
 find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
+find_package(Threads REQUIRED)
 
 if(NOT PKG_CONFIG_FOUND)
     message(FATAL_ERROR "pkg-config not found!" )
@@ -44,7 +45,6 @@ endif()
 #
 find_program(CCACHE_FOUND ccache)
 find_program(MAKE_EXE NAMES gmake nmake make)
-
 
 #
 # CCache settings
@@ -59,9 +59,9 @@ endif(CCACHE_FOUND)
 # Compiler settings
 #
 
-set(CMAKE_CXX_FLAGS "-fdeclspec -fms-extensions")
+message(STATUS "CMAKE_CXX_COMPILER_ID: " ${CMAKE_CXX_COMPILER_ID})
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 
     message(STATUS "Using Clang" )
 
@@ -69,8 +69,14 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 
     message(STATUS "Using gcc" )
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -pthread -static-libgcc -static-libstdc++ ")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -pthread -static-libgcc -static-libstdc++ ")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -static-libgcc")
+    #set(CMAKE_CXX_FLAGS "-fms-extensions -fvisibility=hidden -Wno-pedantic")
+    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -Wno-pedantic")
+    set(CMAKE_LINK_DEPENDS_NO_SHARED TRUE)
+    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+
+    add_compile_options(-lpthread)
 
     if (${CMAKE_SYSTEM_NAME} STREQUAL Linux)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DX86_LINUX")
@@ -89,7 +95,6 @@ endif()
 if (MSVC)
     add_definitions (/W4)
 elseif (CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions (-Wall -pedantic)
 endif ()
 
 #
@@ -101,7 +106,7 @@ include(ExternalProject)
 # External project dependencies
 #
 set(COMMON_DEPENDECIES)
-set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};)
+set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT})
 
 #
 # Google Test
@@ -131,6 +136,7 @@ else()
 
     ExternalProject_Add(armadillo-lib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
+            GIT_TAG 9.700.x
             CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}

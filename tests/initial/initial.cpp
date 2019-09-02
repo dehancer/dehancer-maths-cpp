@@ -31,7 +31,7 @@ TEST(Initial, IitialTest) {
     dehancer::math::float2 f = {1,2};
 
     f.x  = 1;
-    f.y /= 2;
+    f.y /= 2 + f.y;
     std::cout << "Armadillo vector: \n" << f.t() << std::endl;
 
     auto a = f.t()*A;
@@ -39,6 +39,11 @@ TEST(Initial, IitialTest) {
     std::cout << "Armadillo multiple: \n" << a << std::endl;
 
     dehancer::math::float3 f3 = {1,2,1};
+
+    f3.x = 2;
+    f3.y = 1;
+
+    std::cout << "Armadillo f3: \n" << f3 << std::endl;
 
     auto a3x3 = f3*f3.t();
 

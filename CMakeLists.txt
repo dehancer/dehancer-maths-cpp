@@ -64,17 +64,15 @@ message(STATUS "CMAKE_CXX_COMPILER_ID: " ${CMAKE_CXX_COMPILER_ID})
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
 
     message(STATUS "Using Clang" )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wc++17-extensions")
 
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 
     message(STATUS "Using gcc" )
 
-    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -pthread -static-libgcc -static-libstdc++ ")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -static-libgcc")
-    #set(CMAKE_CXX_FLAGS "-fms-extensions -fvisibility=hidden -Wno-pedantic")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -pthread -static-libgcc -static-libstdc++")
     set(CMAKE_CXX_FLAGS "-fvisibility=hidden -Wno-pedantic")
     set(CMAKE_LINK_DEPENDS_NO_SHARED TRUE)
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
 
     add_compile_options(-lpthread)
 
@@ -106,7 +104,7 @@ include(ExternalProject)
 # External project dependencies
 #
 set(COMMON_DEPENDECIES)
-set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT})
+set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT};${MKL_LIBRARIES})
 
 #
 # Google Test

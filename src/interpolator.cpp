@@ -18,14 +18,42 @@ namespace dehancer {
                 return os;
             }
 
+            std::vector<float2>& Interpolator::__controls__::operator = (const std::vector<float2>& vec) {
+                value = vec;
+                if (on_update) {
+                    on_update(value);
+                }
+                return value;
+            }
+
+            Interpolator::__controls__::operator std::vector<float2>() const {
+                return value;
+            }
+
             float2& Interpolator::__controls__::operator[](int index) {
+
+                int _index = index;
+
                 if (value.empty()) {
                     value.push_back({0,0});
-                    return value[0];
-                };
-                if (index<0) return value[0];
-                if (index>=value.size()) return value[value.size()-1];
-                return value[index];
+                    _index = 0;
+                }
+
+                if (_index<0) _index = 0;
+
+                if (index>=value.size()) _index = value.size()-1;
+
+                if (on_update) {
+                    //auto_lf([this](){on_update(value);});
+                    auto guard = make_scope_guard([this](){
+                        std::cout << " ... on update 0 = \n";
+                        on_update(value);
+                    });
+                    std::cout << " ... on update 1 = \n";
+                    return value[_index];
+                }
+                std::cout << " ... on update 1 = \n";
+                return value[_index];
             }
 
             float2 Interpolator::__controls__::operator[](int index) const {
@@ -34,6 +62,19 @@ namespace dehancer {
                 if (index>=value.size()) return value[value.size()-1];
                 return value[index];
             }
+
+            Interpolator::Interpolator(size_t resolution):resolution_(resolution)
+            {
+                controls.on_update = [](const std::vector<float2>& cnts) {
+                    std::cout << " ... on update = \n";
+                    for (auto &v: cnts) {
+                        std::cout << v.t() << ", ";
+                    }
+                    std::cout << std::endl;
+                };
+            }
+
+            Interpolator::~Interpolator(){}
 
             float Interpolator::linear(float x) const {
 
@@ -83,17 +124,19 @@ namespace dehancer {
                 return std::make_tuple(left,right);
             }
         }
+    }
 
-        float LinearInterpolator::value(float x) const {
+    namespace spline {
+
+        float Linear::value(float x) const {
             auto y = test_bounds(x);
             if (y)                                   return *y;
             if (controls.size()<minimum_controls())  return x;
             return linear(x);
         }
 
-        size_t LinearInterpolator::minimum_controls() const {
+        size_t Linear::minimum_controls() const {
             return 1;
         }
-
     }
 }

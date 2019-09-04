@@ -13,6 +13,7 @@
 #include "dehancer/vectors.hpp"
 #include "dehancer/optional.hpp"
 #include "dehancer/scope_guard.hpp"
+#include "dehancer/details/observable_array.hpp"
 
 namespace dehancer{
 
@@ -27,45 +28,14 @@ namespace dehancer{
 
         namespace protocol {
 
-            using Handler  = std::function<void(const std::vector<float2>&)>;
-
-            struct auto_lf {
-                std::function< void() > _lambda;
-                template< typename RET, typename ... ARGS >
-                inline auto_lf( RET F( ARGS... ),  ARGS... args ) : _lambda{ [ F, args... ] { F( args... ); } } {}
-                inline auto_lf( std::function< void() >&& func ) : _lambda{ std::move( func ) } {}
-                inline ~auto_lf() { _lambda(); }
-            };
-
             class Interpolator {
+
             public:
 
                 /***
                  * Control points
                  */
-                struct __controls__
-                {
-
-                public:
-
-                    Handler on_update = nullptr;
-
-                    std::vector<float2>& operator= (const std::vector<float2>& vec);
-
-                    operator std::vector<float2>() const;
-
-                    float2& operator[] (int index);
-
-                    float2  operator[] (int index) const;
-
-                    size_t  size() const { return value.size(); }
-
-                    friend std::ostream& operator<<(std::ostream& os, const __controls__ & controls);
-
-                private:
-                    std::vector<float2> value;
-
-                } controls;
+                observable::Array<dehancer::math::float2> controls;
 
                 /***
                  * Interpolation resolution
@@ -129,6 +99,14 @@ namespace dehancer{
                  * @return start/end indices
                  */
                 static std::tuple<std::size_t,std::size_t> indices(const std::vector<float2>& controls, float x);
+
+                /***
+                 * Get linear interpolation for the x "time" over curve
+                 * @param curve
+                 * @param x
+                 * @return
+                 */
+                static float linear(const std::vector<float2>& curve, float x);
 
                 /***
                  * Create interpolation object

@@ -15,6 +15,8 @@ namespace dehancer {
         public:
             using math::protocol::Interpolator::Interpolator;
 
+            MatrixBased(size_t resolution = 256);
+
             virtual size_t minimum_controls() const;
 
             virtual float value(float x) const;

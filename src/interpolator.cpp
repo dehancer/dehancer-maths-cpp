@@ -10,80 +10,35 @@ namespace dehancer {
 
         namespace protocol {
 
-            std::ostream& operator<<(std::ostream &os,
-                                     const dehancer::math::protocol::Interpolator::__controls__ &controls) {
-                for (auto &v: controls.value) {
-                    os << v.t();
-                }
-                return os;
-            }
-
-            std::vector<float2>& Interpolator::__controls__::operator = (const std::vector<float2>& vec) {
-                value = vec;
-                if (on_update) {
-                    on_update(value);
-                }
-                return value;
-            }
-
-            Interpolator::__controls__::operator std::vector<float2>() const {
-                return value;
-            }
-
-            float2& Interpolator::__controls__::operator[](int index) {
-
-                int _index = index;
-
-                if (value.empty()) {
-                    value.push_back({0,0});
-                    _index = 0;
-                }
-
-                if (_index<0) _index = 0;
-
-                if (index>=value.size()) _index = value.size()-1;
-
-                if (on_update) {
-                    //auto_lf([this](){on_update(value);});
-                    auto guard = make_scope_guard([this](){
-                        std::cout << " ... on update 0 = \n";
-                        on_update(value);
-                    });
-                    std::cout << " ... on update 1 = \n";
-                    return value[_index];
-                }
-                std::cout << " ... on update 1 = \n";
-                return value[_index];
-            }
-
-            float2 Interpolator::__controls__::operator[](int index) const {
-                if (value.empty()) return {0,0};
-                if (index<0) return value[0];
-                if (index>=value.size()) return value[value.size()-1];
-                return value[index];
-            }
-
-            Interpolator::Interpolator(size_t resolution):resolution_(resolution)
-            {
-                controls.on_update = [](const std::vector<float2>& cnts) {
-                    std::cout << " ... on update = \n";
-                    for (auto &v: cnts) {
-                        std::cout << v.t() << ", ";
-                    }
-                    std::cout << std::endl;
-                };
+            Interpolator::Interpolator(size_t resolution):resolution_(resolution){
+                controls.on_update = nullptr; //[](const std::vector<float2>){};
             }
 
             Interpolator::~Interpolator(){}
 
             float Interpolator::linear(float x) const {
 
-                auto tm = indices(x);
+                return linear(controls,x);
+//                auto tm = indices(x);
+//                auto k1 = std::get<0>(tm);
+//                auto k2 = std::get<1>(tm);
+//
+//                auto P0 = this->controls[k1];
+//                auto P1 = this->controls[k2];
+//
+//                auto d = P1.x - P0.x;
+//                auto t = d == 0 ? 0 : (x-P0.x)/d;
+//
+//                return (1 - t) * P0.y + t * P1.y;
+            }
+
+            float Interpolator::linear(const std::vector<dehancer::math::float2> &curve, float x) {
+                auto tm = Interpolator::indices(curve,x);
                 auto k1 = std::get<0>(tm);
                 auto k2 = std::get<1>(tm);
 
-                auto P0 = this->controls[k1];
-                auto P1 = this->controls[k2];
+                float2 P0 = curve[k1];
+                float2 P1 = curve[k2];
 
                 auto d = P1.x - P0.x;
                 auto t = d == 0 ? 0 : (x-P0.x)/d;

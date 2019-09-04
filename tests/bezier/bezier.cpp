@@ -13,6 +13,17 @@ TEST(Interpolation, BezierTest) {
 
     std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
 
+
+//    dehancer::observable::Array<dehancer::math::float2> a;
+//
+//    a.on_update = [](const std::vector<dehancer::math::float2>& vector){
+//        std::cout << vector << std::endl;
+//    };
+//
+//    a[0] = {1,42};
+//    a[0] = {42,1};
+
+
     dehancer::spline::Bezier spline;
 
     spline.controls = {{0,0},{0.1,0.2},{0.2,0.3},{0.3,0.4}, {0.5,0.8} ,{1,0.1}};

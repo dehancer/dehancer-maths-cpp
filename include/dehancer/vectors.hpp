@@ -6,17 +6,28 @@
 
 #include <armadillo>
 #include "dehancer/properties.hpp"
+#include "dehancer/details/observable_array.hpp"
 
 namespace dehancer {
 
     namespace math {
 
-        class float2: public arma::fvec::fixed<2> {
+        template<size_t N>
+        class float_vector: public arma::fvec::fixed<N> {
+            using armfloatN = arma::fvec::fixed<N>;
+        public:
+            using armfloatN::armfloatN;
+            float_vector& operator=(const observable::Aproxy<float_vector> &a) {
+                *this = a.get_data();
+                return *this;
+            }
+        };
 
-            using armfloat2 = arma::fvec::fixed<2>;
+        class float2: public float_vector<2> {
 
         public:
-            using armfloat2::armfloat2;
+
+            using float_vector::float_vector;
 
             DEFINE_PROPERTY(x,
                             float, float2,
@@ -29,14 +40,15 @@ namespace dehancer {
                             { return (*self)(1) = value; }, // setter
                             { return (*self)(1); }          // getter
             );
+
+
+            float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
         };
 
-        class float3: public arma::fvec::fixed<3> {
-
-            using armfloat3 = arma::fvec::fixed<3>;
+        class float3: public float_vector<3> {
 
         public:
-            using armfloat3::armfloat3;
+            using float_vector::float_vector;
 
             DEFINE_PROPERTY(x,
                             float, float3,
@@ -56,14 +68,14 @@ namespace dehancer {
                             { return (*self)(2); }          // getter
             );
 
+            float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
+
         };
 
-        class float4: public arma::fvec::fixed<4> {
-
-            using armfloat4 = arma::fvec::fixed<4>;
+        class float4: public float_vector<4> {
 
         public:
-            using armfloat4::armfloat4;
+            using float_vector::float_vector;
 
             DEFINE_PROPERTY(x,
                             float, float4,
@@ -88,6 +100,8 @@ namespace dehancer {
                             { return (*self)(3) = value; }, // setter
                             { return (*self)(3); }            // getter
             );
+
+            float4(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
         };
     }
 }

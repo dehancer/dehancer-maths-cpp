@@ -16,52 +16,23 @@ namespace dehancer {
             using math::protocol::Interpolator::Interpolator;
 
             MatrixBased(size_t resolution = 256);
-            MatrixBased(const std::vector<dehancer::math::float2>& controls, size_t resolution = 256);
 
-            virtual size_t minimum_controls() const;
+            MatrixBased(const std::vector<math::float2>& controls, size_t resolution = 256);
 
-            virtual float value(float x) const;
+            virtual ~MatrixBased() override {}
 
-            virtual math::float4x4& get_matrix() const = 0;
+            virtual size_t minimum_controls() const override ;
 
-            void evaluate_curve();
+            virtual float value(float x) const override ;
 
+            virtual const math::float4x4& get_matrix() const = 0;
+
+        protected:
+            virtual void evaluate_curve() ;
         private:
-            std::vector<math::float2> spline(math::float4 x, math::float4 y, size_t np);
-            void make_nps(std::vector<size_t>& nps);
-
             std::vector<math::float2> curve_;
-
-            READONLY_PROPERTY(cpn,
-                              size_t , MatrixBased,
-                              { return this->controls.size(); } // getter
-            );
-
-            READONLY_PROPERTY(ni,
-                              size_t , MatrixBased,
-                              { return this->cpn - (this->minimum_controls()-1); } // getter
-            );
-
-            READONLY_PROPERTY(n,
-                              size_t , MatrixBased,
-                              { return this->resolution; } // getter
-            );
-
-            //
-            // Points in every intervals between 1 and n-1
-            //
-            READONLY_PROPERTY(npf,
-                              size_t , MatrixBased,
-                              { return this->n/this->ni; } // getter
-            );
-
-            //
-            // Points in the last interval
-            //
-            READONLY_PROPERTY(npl,
-                              size_t , MatrixBased,
-                              { return this->n - (this->npf * (this->ni - 1)); } // getter
-            );
+            void make_nps(std::vector<size_t>& nps) const ;
+            void spline(std::vector<math::float2>& sp, const math::float4& x, const math::float4& y, size_t np) const ;
         };
 
     }

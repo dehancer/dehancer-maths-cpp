@@ -20,19 +20,7 @@ namespace dehancer {
             Interpolator::~Interpolator(){}
 
             float Interpolator::linear(float x) const {
-
                 return linear(controls,x);
-//                auto tm = indices(x);
-//                auto k1 = std::get<0>(tm);
-//                auto k2 = std::get<1>(tm);
-//
-//                auto P0 = this->controls[k1];
-//                auto P1 = this->controls[k2];
-//
-//                auto d = P1.x - P0.x;
-//                auto t = d == 0 ? 0 : (x-P0.x)/d;
-//
-//                return (1 - t) * P0.y + t * P1.y;
             }
 
             float Interpolator::linear(const std::vector<dehancer::math::float2> &curve, float x) {

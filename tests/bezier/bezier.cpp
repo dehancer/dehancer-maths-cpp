@@ -13,16 +13,18 @@ TEST(Interpolation, BezierTest) {
 
     std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
 
-    dehancer::spline::Bezier spline({
-                                            {0,0},
-                                            {0.2,0.4},
-                                            {0.9,0.6},
-                                            {1,1}
-                                    });
+    std::vector<dehancer::math::float2> points = {
+            {0,0},
+            {0.2,0.4},
+            {0.9,0.4},
+            {1,1}
+    };
+
+    auto spline = dehancer::spline::Bezier(points);
+
+    //spline.controls = points;
 
     std::cout << "Controls: \n" <<  spline.controls << std::endl;
-
-    spline.evaluate_curve();
 
     std::cout << "! matlab script there: " << std::endl;
     std::cout << "x = [";

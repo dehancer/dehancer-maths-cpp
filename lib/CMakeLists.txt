@@ -19,6 +19,7 @@ FILE(GLOB INCLUDE_FILES
 
 FILE(GLOB SOURCES
         ../src/*.cpp
+        ../src/spline/*.cpp
         )
 
 add_library(

@@ -40,17 +40,17 @@ namespace dehancer{
                 /***
                  * Interpolation resolution
                  */
-                DEFINE_READONLY_PROPERTY(resolution,
-                                         size_t, Interpolator,
-                                         { return self->resolution_; } // getter
+                READONLY_PROPERTY(resolution,
+                                  size_t, Interpolator,
+                                  { return this->resolution_; } // getter
                 );
 
                 /**
                  * Interpolation precision step
                  */
-                DEFINE_READONLY_PROPERTY(step,
-                                         float, Interpolator,
-                                         { return 1.0f/self->resolution_; } // getter
+                READONLY_PROPERTY(step,
+                                  float, Interpolator,
+                                  { return 1.0f/this->resolution_; } // getter
                 );
 
                 /***
@@ -114,23 +114,14 @@ namespace dehancer{
                  */
                 Interpolator(size_t resolution = 256);
 
+                Interpolator(const std::vector<float2>& controls, size_t resolution = 256);
+
                 virtual ~Interpolator();
 
             private:
                 size_t resolution_;
             };
         }
-    }
-
-    namespace spline {
-
-        class Linear: public math::protocol::Interpolator {
-
-        public:
-            using math::protocol::Interpolator::Interpolator;
-            virtual size_t minimum_controls() const;
-            virtual float value(float x) const;
-        };
     }
 }
 

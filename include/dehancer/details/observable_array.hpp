@@ -86,20 +86,20 @@ namespace dehancer {
                 return value_[index];
             }
 
-            Aproxy<T> operator[](int i) {
-
-                if (i>=value_.size()) {
-                    value_.resize(i+1);
-                }
-
-                return Aproxy<T>(
-                        value_[i],
-                        value_,
-                        [this](const std::vector<T>& vector){
-                            if (on_update)
-                                on_update(vector);
-                        });
-            }
+//            Aproxy<T> operator[](int i) {
+//
+//                if (i>=value_.size()) {
+//                    value_.resize(i+1);
+//                }
+//
+//                return Aproxy<T>(
+//                        value_[i],
+//                        value_,
+//                        [this](const std::vector<T>& vector){
+//                            if (on_update)
+//                                on_update(vector);
+//                        });
+//            }
 
             friend std::ostream& operator<<(std::ostream& os, const Array& array){
                 for (auto &v: array.value_) {

@@ -19,14 +19,20 @@ namespace dehancer {
             };
         }
 
+        MatrixBased::MatrixBased(const std::vector<dehancer::math::float2> &controls, size_t resolution):
+        Interpolator(controls,resolution)
+        {
+           //evaluate_curve();
+        }
+
         size_t MatrixBased::minimum_controls() const {
             return 4;
         }
 
         float MatrixBased::value(float x) const {
             auto y = test_bounds(x);
-            if (y)                                   return *y;
-            if (controls.size()<minimum_controls())  return x;
+            if (y)                                 return *y;
+            if (curve_.size()<minimum_controls())  return x;
             return Interpolator::linear(curve_,x);
         }
 
@@ -61,7 +67,7 @@ namespace dehancer {
             std::vector<math::float2> s;
             for (int n = 0; n < np; ++n) {
                 math::float4 t = {1, static_cast<float>(u(n)), static_cast<float>(u2[n]), static_cast<float>(u3[n])};
-                auto tm = get_matrix() * t;
+                auto tm = t.t() * this->get_matrix() ;
                 math::float2 dt = {arma::dot(tm,x), arma::dot(tm,y)};
                 s.push_back(dt);
             }

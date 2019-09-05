@@ -13,6 +13,15 @@ TEST(Initial, IitialTest) {
 
     std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
 
+    dehancer::observable::Array<dehancer::math::float2> array;
+
+    array.on_update = [](const std::vector<dehancer::math::float2>& vector){
+        std::cout << vector << std::endl;
+    };
+
+    array[0] = {1,42};
+    array[0] = {42,1};
+
     arma::mat A = { {1, 3},
                     {2, 4} };
 

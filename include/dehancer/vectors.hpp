@@ -29,20 +29,39 @@ namespace dehancer {
 
             using float_vector::float_vector;
 
-            DEFINE_PROPERTY(x,
-                            float, float2,
-                            { return (*self)(0) = value; }, // setter
-                            { return (*self)(0); }          // getter
+            PROPERTY(x,
+                     float,
+                     float2,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(y,
-                            float, float2,
-                            { return (*self)(1) = value; }, // setter
-                            { return (*self)(1); }          // getter
+            PROPERTY(y,
+                     float,
+                     float2,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
             );
+
+//            DEFINE_PROPERTY(_x,
+//                            float, float2,
+//                            { return (*self)[0] = value; }, // setter
+//                            { return (*self)[0]; }          // getter
+//            );
+//
+//            DEFINE_PROPERTY(y,
+//                            float, float2,
+//                            { return (*self)[1] = value; }, // setter
+//                            {
+//                                std::cout << " ... " << (*self)[1]  << std::endl;
+//                                return
+//                                        (*self)[1];
+//                            }          // getter
+//            );
 
 
             float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
+
         };
 
         class float3: public float_vector<3> {
@@ -50,23 +69,44 @@ namespace dehancer {
         public:
             using float_vector::float_vector;
 
-            DEFINE_PROPERTY(x,
-                            float, float3,
-                            { return (*self)(0) = value; }, // setter
-                            { return (*self)(0); }          // getter
+            PROPERTY(x,
+                     float,
+                     float3,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(y,
-                            float, float3,
-                            { return (*self)(1) = value; }, // setter
-                            { return (*self)(1); }          // getter
+            PROPERTY(y,
+                     float,
+                     float3,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(z,
-                            float, float3,
-                            { return (*self)(2) = value; }, // setter
-                            { return (*self)(2); }          // getter
+            PROPERTY(z,
+                     float,
+                     float3,
+                     { return (*this)[2];         }, // getter
+                     {        (*this)[2] = value; }  // setter
             );
+//
+//            DEFINE_PROPERTY(x,
+//                            float, float3,
+//                            { return (*self)[0] = value; }, // setter
+//                            { return (*self)[0]; }          // getter
+//            );
+//
+//            DEFINE_PROPERTY(y,
+//                            float, float3,
+//                            { return (*self)[1] = value; }, // setter
+//                            { return (*self)[1]; }          // getter
+//            );
+//
+//            DEFINE_PROPERTY(z,
+//                            float, float3,
+//                            { return (*self)[2] = value; }, // setter
+//                            { return (*self)[2]; }          // getter
+//            );
 
             float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
@@ -77,28 +117,57 @@ namespace dehancer {
         public:
             using float_vector::float_vector;
 
-            DEFINE_PROPERTY(x,
-                            float, float4,
-                            { return (*self)(0) = value; }, // setter
-                            { return (*self)(0); }            // getter
+//            DEFINE_PROPERTY(x,
+//                            float, float4,
+//                            { return (*self)[0] = value; }, // setter
+//                            { return (*self)[0]; }            // getter
+//            );
+//
+//            DEFINE_PROPERTY(y,
+//                            float, float4,
+//                            { return (*self)[1] = value; }, // setter
+//                            { return (*self)[1]; }            // getter
+//            );
+//
+//            DEFINE_PROPERTY(z,
+//                            float, float4,
+//                            { return (*self)[2] = value; }, // setter
+//                            { return (*self)[2]; }            // getter
+//            );
+//
+//            DEFINE_PROPERTY(w,
+//                            float, float4,
+//                            { return (*self)[3] = value; }, // setter
+//                            { return (*self)[3]; }            // getter
+//            );
+
+
+            PROPERTY(x,
+                     float,
+                     float4,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(y,
-                            float, float4,
-                            { return (*self)(1) = value; }, // setter
-                            { return (*self)(1); }            // getter
+            PROPERTY(y,
+                     float,
+                     float4,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(z,
-                            float, float4,
-                            { return (*self)(2) = value; }, // setter
-                            { return (*self)(2); }            // getter
+            PROPERTY(z,
+                     float,
+                     float4,
+                     { return (*this)[2];         }, // getter
+                     {        (*this)[2] = value; }  // setter
             );
 
-            DEFINE_PROPERTY(w,
-                            float, float4,
-                            { return (*self)(3) = value; }, // setter
-                            { return (*self)(3); }            // getter
+            PROPERTY(w,
+                     float,
+                     float4,
+                     { return (*this)[3];         }, // getter
+                     {        (*this)[3] = value; }  // setter
             );
 
             float4(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}

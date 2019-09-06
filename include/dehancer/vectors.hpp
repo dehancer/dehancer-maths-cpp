@@ -43,23 +43,6 @@ namespace dehancer {
                      {        (*this)[1] = value; }  // setter
             );
 
-//            DEFINE_PROPERTY(_x,
-//                            float, float2,
-//                            { return (*self)[0] = value; }, // setter
-//                            { return (*self)[0]; }          // getter
-//            );
-//
-//            DEFINE_PROPERTY(y,
-//                            float, float2,
-//                            { return (*self)[1] = value; }, // setter
-//                            {
-//                                std::cout << " ... " << (*self)[1]  << std::endl;
-//                                return
-//                                        (*self)[1];
-//                            }          // getter
-//            );
-
-
             float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
 
         };
@@ -89,24 +72,6 @@ namespace dehancer {
                      { return (*this)[2];         }, // getter
                      {        (*this)[2] = value; }  // setter
             );
-//
-//            DEFINE_PROPERTY(x,
-//                            float, float3,
-//                            { return (*self)[0] = value; }, // setter
-//                            { return (*self)[0]; }          // getter
-//            );
-//
-//            DEFINE_PROPERTY(y,
-//                            float, float3,
-//                            { return (*self)[1] = value; }, // setter
-//                            { return (*self)[1]; }          // getter
-//            );
-//
-//            DEFINE_PROPERTY(z,
-//                            float, float3,
-//                            { return (*self)[2] = value; }, // setter
-//                            { return (*self)[2]; }          // getter
-//            );
 
             float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
@@ -116,31 +81,6 @@ namespace dehancer {
 
         public:
             using float_vector::float_vector;
-
-//            DEFINE_PROPERTY(x,
-//                            float, float4,
-//                            { return (*self)[0] = value; }, // setter
-//                            { return (*self)[0]; }            // getter
-//            );
-//
-//            DEFINE_PROPERTY(y,
-//                            float, float4,
-//                            { return (*self)[1] = value; }, // setter
-//                            { return (*self)[1]; }            // getter
-//            );
-//
-//            DEFINE_PROPERTY(z,
-//                            float, float4,
-//                            { return (*self)[2] = value; }, // setter
-//                            { return (*self)[2]; }            // getter
-//            );
-//
-//            DEFINE_PROPERTY(w,
-//                            float, float4,
-//                            { return (*self)[3] = value; }, // setter
-//                            { return (*self)[3]; }            // getter
-//            );
-
 
             PROPERTY(x,
                      float,

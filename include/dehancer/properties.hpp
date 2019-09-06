@@ -34,17 +34,22 @@ operator const __PROPS_TYPE__() const __GETTER__; \
 } __PROPS__ = { .self = this }
 */
 
-template<typename C, typename T, T (C::*getter)() const, void (C::*setter)(const T&)>
+template<typename Outer, typename T, T& (Outer::*getter)(), void (Outer::*setter)(const T&)>
 struct Property
 {
-    C *instance;
+    Outer *instance;
 
-    Property(C *instance)
+    Property(Outer *instance)
             : instance(instance)
     {
     }
 
     operator T () const
+    {
+        return (instance->*getter)();
+    }
+
+    operator T& ()
     {
         return (instance->*getter)();
     }
@@ -55,9 +60,8 @@ struct Property
         return *this;
     }
 
-    template<typename C2, typename T2,
-            T2 (C2::*getter2)(), void (C2::*setter2)(const T2&)>
-    Property& operator=(const Property<C2, T2, getter2, setter2>& other)
+    template<typename OuterIn, typename TIn, TIn (OuterIn::*getter2)(), void (OuterIn::*setter2)(const TIn&)>
+    Property& operator=(const Property<OuterIn, TIn, getter2, setter2>& other)
     {
         return *this = (other.instance->*getter2)();
     }
@@ -70,16 +74,17 @@ struct Property
 
 
 #define PROPERTY(__PROPS__, __PROPS_TYPE__, __OUTER_CLASS__, __GETTER__, __SETTER__ ) \
-void  set_ ##__PROPS__(const __PROPS_TYPE__& value) __SETTER__;\
-__PROPS_TYPE__ get_ ##__PROPS__() const __GETTER__;\
-Property<__OUTER_CLASS__, __PROPS_TYPE__, &__OUTER_CLASS__::get_ ##__PROPS__, &__OUTER_CLASS__::set_ ##__PROPS__> __PROPS__ = this
+void set_ ##__PROPS__(const __PROPS_TYPE__& value) __SETTER__;\
+__PROPS_TYPE__&  get_ ##__PROPS__() __GETTER__;\
+Property<__OUTER_CLASS__, __PROPS_TYPE__,\
+&__OUTER_CLASS__::get_ ##__PROPS__, &__OUTER_CLASS__::set_ ##__PROPS__> __PROPS__ = this
 
-template<typename C, typename T, T (C::*getter)() const>
+template<typename Outer, typename T, T (Outer::*getter)() const>
 struct ReadOnlyProperty
 {
-    C *instance;
+    Outer *instance;
 
-    ReadOnlyProperty(C *instance)
+    ReadOnlyProperty(Outer *instance)
             : instance(instance)
     {
     }
@@ -88,8 +93,8 @@ struct ReadOnlyProperty
         return (instance->*getter)();
     }
 
-    template<typename C2, typename T2, T2 (C2::*getter2)()>
-    ReadOnlyProperty& operator=(const ReadOnlyProperty<C2, T2, getter2>& other)
+    template<typename OuterIn, typename TIn, TIn (OuterIn::*getter2)()>
+    ReadOnlyProperty& operator=(const ReadOnlyProperty<OuterIn, TIn, getter2>& other)
     {
         return *this = (other.instance->*getter2)();
     }

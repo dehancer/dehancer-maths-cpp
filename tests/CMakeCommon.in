@@ -11,6 +11,8 @@ file(GLOB TESTS_SOURCES ${TESTS_SOURCES}
         ./*.cpp
         )
 
+include_directories(./)
+
 add_executable(${TEST} ${TESTS_SOURCES})
 
 target_link_libraries(

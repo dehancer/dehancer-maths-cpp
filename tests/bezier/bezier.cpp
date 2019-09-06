@@ -4,41 +4,36 @@
 
 #include "gtest/gtest.h"
 #include "dehancer/math.hpp"
+#include "../common/matlab_utils.hpp"
+
 #include <memory>
+
+std::vector<dehancer::math::float2> points = {
+        {0,0},
+        {0.2,0.4},
+        {0.9,0.4},
+        {1,1}
+};
 
 TEST(Interpolation, BezierTest) {
 
     std::cerr << std::endl;
     std::cout << std::endl;
 
-    std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
-
-    std::vector<dehancer::math::float2> points = {
-            {0,0},
-            {0.2,0.4},
-            {0.9,0.4},
-            {1,1}
-    };
-
     auto spline = dehancer::spline::Bezier(points);
 
-    //spline.controls = points;
+    matlab::utils::print(spline,1);
+}
 
-    std::cout << "Controls: \n" <<  spline.controls << std::endl;
 
-    std::cout << "! matlab script there: " << std::endl;
-    std::cout << "x = [";
-    for (int i = 0; i <= spline.resolution; ++i) {
-        auto x = i*spline.step;
-        std::cout << " " << x;
-    }
-    std::cout << "];"<< std::endl;
+TEST(Interpolation, BezierWithControlTest) {
 
-    std::cout << "y = [";
-    for (int i = 0; i <= spline.resolution; ++i) {
-        auto x = i*spline.step;
-        std::cout << " " << spline.value(x);
-    }
-    std::cout << "];" << std::endl;
-    std::cout << "plot(x,y);" << std::endl;
+    std::cerr << std::endl;
+    std::cout << std::endl;
+
+    auto spline = dehancer::spline::Bezier();
+
+    spline.controls = points;
+
+    matlab::utils::print(spline,2);
 }

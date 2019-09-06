@@ -18,7 +18,6 @@ std::vector<dehancer::math::float2> points = {
 
 TEST(Initial, IitialTest) {
 
-    //std::make_shared()
     std::cerr << std::endl;
     std::cout << std::endl;
 

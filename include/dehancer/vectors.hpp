@@ -18,8 +18,7 @@ namespace dehancer {
         public:
             using armfloatN::armfloatN;
             float_vector& operator=(const observable::Aproxy<float_vector> &a) {
-                *this = a.get_data();
-                return *this;
+                return *this = a.get_data();
             }
         };
 

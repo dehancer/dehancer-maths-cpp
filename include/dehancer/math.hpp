@@ -4,5 +4,8 @@
 
 #pragma once
 
-#include "dehancer/interpolator.hpp"
 #include "dehancer/vectors.hpp"
+#include "dehancer/matrix.hpp"
+#include "dehancer/interpolator.hpp"
+#include "dehancer/spline/linear.hpp"
+#include "dehancer/spline/bezier.hpp"

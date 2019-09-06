@@ -6,76 +6,110 @@
 
 #include <armadillo>
 #include "dehancer/properties.hpp"
+#include "dehancer/details/observable_array.hpp"
 
 namespace dehancer {
 
     namespace math {
 
-        using float2x2 = arma::fmat::fixed<2,2>;
-        using float3x3 = arma::fmat::fixed<3,3>;
-        using float4x4 = arma::fmat::fixed<4,4>;
-
-        class float2: public arma::fvec::fixed<2> {
-
-            using armfloat2 = arma::fvec::fixed<2>;
-
+        template<size_t N>
+        class float_vector: public arma::fvec::fixed<N> {
+            using armfloatN = arma::fvec::fixed<N>;
         public:
-            using armfloat2::armfloat2;
-
-            PROPERTY(float,x);
-            PROPERTY(float,y);
-
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
-
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            using armfloatN::armfloatN;
+            float_vector& operator=(const observable::Aproxy<float_vector> &a) {
+                return *this = a.get_data();
+            }
         };
 
-        class float3: public arma::fvec::fixed<3> {
-
-            using armfloat3 = arma::fvec::fixed<3>;
+        class float2: public float_vector<2> {
 
         public:
-            using armfloat3::armfloat3;
 
-            PROPERTY(float,x);
-            PROPERTY(float,y);
-            PROPERTY(float,z);
+            using float_vector::float_vector;
 
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
+            PROPERTY(x,
+                     float,
+                     float2,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
+            );
 
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            PROPERTY(y,
+                     float,
+                     float2,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
+            );
 
-            GET(z) { return (*this)(2); }
-            SET(z) { (*this)(2) = value;}
+            float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
+
         };
 
-        class float4: public arma::fvec::fixed<4> {
-
-            using armfloat4 = arma::fvec::fixed<4>;
+        class float3: public float_vector<3> {
 
         public:
-            using armfloat4::armfloat4;
+            using float_vector::float_vector;
 
-            PROPERTY(float,x);
-            PROPERTY(float,y);
-            PROPERTY(float,z);
-            PROPERTY(float,w);
+            PROPERTY(x,
+                     float,
+                     float3,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
+            );
 
-            GET(x) { return (*this)(0); }
-            SET(x) { (*this)(0) = value; }
+            PROPERTY(y,
+                     float,
+                     float3,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
+            );
 
-            GET(y) { return (*this)(1); }
-            SET(y) { (*this)(1) = value;}
+            PROPERTY(z,
+                     float,
+                     float3,
+                     { return (*this)[2];         }, // getter
+                     {        (*this)[2] = value; }  // setter
+            );
 
-            GET(z) { return (*this)(2); }
-            SET(z) { (*this)(2) = value;}
+            float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
-            GET(w) { return (*this)(3); }
-            SET(w) { (*this)(3) = value;}
+        };
+
+        class float4: public float_vector<4> {
+
+        public:
+            using float_vector::float_vector;
+
+            PROPERTY(x,
+                     float,
+                     float4,
+                     { return (*this)[0];         }, // getter
+                     {        (*this)[0] = value; }  // setter
+            );
+
+            PROPERTY(y,
+                     float,
+                     float4,
+                     { return (*this)[1];         }, // getter
+                     {        (*this)[1] = value; }  // setter
+            );
+
+            PROPERTY(z,
+                     float,
+                     float4,
+                     { return (*this)[2];         }, // getter
+                     {        (*this)[2] = value; }  // setter
+            );
+
+            PROPERTY(w,
+                     float,
+                     float4,
+                     { return (*this)[3];         }, // getter
+                     {        (*this)[3] = value; }  // setter
+            );
+
+            float4(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
         };
     }
 }

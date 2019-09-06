@@ -7,52 +7,121 @@
 #include <vector>
 #include <armadillo>
 #include <iostream>
+#include <memory>
+#include <functional>
 
 #include "dehancer/vectors.hpp"
+#include "dehancer/optional.hpp"
+#include "dehancer/scope_guard.hpp"
+#include "dehancer/details/observable_array.hpp"
 
 namespace dehancer{
 
     namespace math {
 
+        using namespace tl;
+
+        struct Bounds {
+            float2 left;
+            float2 right;
+        };
+
         namespace protocol {
 
             class Interpolator {
+
             public:
 
-                class __controls__
-                {
-                    std::vector<float2> value;
-                    friend struct Interpolator;
-                public:
-                    std::vector<float2>& operator= (const std::vector<float2>& vec) { return (value = vec); }
-                    operator std::vector<float2>() const { return value; }
-                    friend std::ostream& operator<<(std::ostream& os, const __controls__ & controls);
-                } controls;
+                /***
+                 * Control points
+                 */
+                observable::Array<dehancer::math::float2> controls;
 
-                READONLY_PROPERTY(size_t,resolution);
-                GET(resolution) {
-                    return resolution_;
-                }
+                /***
+                 * Interpolation resolution
+                 */
+                READONLY_PROPERTY(resolution,
+                                  size_t, Interpolator,
+                                  { return this->resolution_; } // getter
+                );
 
-                Interpolator(size_t resolution = 256):resolution_(resolution){};
+                /**
+                 * Interpolation precision step
+                 */
+                READONLY_PROPERTY(step,
+                                  float, Interpolator,
+                                  { return 1.0f/this->resolution_; } // getter
+                );
+
+                /***
+                 * Lerp value
+                 * @param x - current "time"
+                 * @return interpolated value
+                 */
                 virtual float value(float x) const = 0;
-                virtual ~Interpolator(){}
+
+                /***
+                 * Get linear interpolation for the x "time"
+                 * @param x - "time"
+                 * @return interpolated value
+                 */
+                virtual float linear(float x) const;
+
+                /***
+                 * Test bounds for the x "time"
+                 * @return return nullopt if x is within bounds or closest bound
+                 */
+                virtual optional<float> test_bounds(float x) const;
+
+                /**
+                 * Interpolation bounds
+                 * @return by default 0,0:1,1
+                 */
+                virtual Bounds get_bounds() const;
+
+                /***
+                 * Minimal control points that must be set for the intrapolation method
+                 * @return size
+                 */
+                virtual size_t minimum_controls() const = 0;
+
+                /***
+                 * Get indices for the current interpolation control points
+                 * @param x - "time"
+                 * @return
+                 */
+                virtual std::tuple<std::size_t,std::size_t> indices(float x) const ;
+
+                /***
+                 * Return indices of piece on linear cut from any controls sequence
+                 * @param controls - control points
+                 * @param x - "time"
+                 * @return start/end indices
+                 */
+                static std::tuple<std::size_t,std::size_t> indices(const std::vector<float2>& controls, float x);
+
+                /***
+                 * Get linear interpolation for the x "time" over curve
+                 * @param curve
+                 * @param x
+                 * @return
+                 */
+                static float linear(const std::vector<float2>& curve, float x);
+
+                /***
+                 * Create interpolation object
+                 * @param resolution - interpolation resolution
+                 */
+                Interpolator(size_t resolution = 256);
+
+                Interpolator(const std::vector<float2>& controls, size_t resolution = 256);
+
+                virtual ~Interpolator();
 
             private:
                 size_t resolution_;
             };
         }
-
-        class Interpolator: public protocol::Interpolator {
-
-        public:
-            using protocol::Interpolator::Interpolator;
-            READONLY_PROPERTY(size_t,step);
-            GET(step) {
-                return 1.0f/this->resolution;
-            }
-        };
-
     }
 }
 

@@ -4,19 +4,25 @@
 
 #include "gtest/gtest.h"
 #include "dehancer/math.hpp"
+#include "../common/matlab_utils.hpp"
 #include <memory>
 
-TEST(Initial, IitialTest) {
+TEST(Interpolation, LinearTest) {
 
     std::cerr << std::endl;
     std::cout << std::endl;
 
     std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
 
-    dehancer::math::Interpolator linear;
+    dehancer::spline::Linear spline;
 
-    linear.controls = {{0.1,0.2},{0.2,0.3},{0.3,0.4}};
+    spline.controls = {{0,0},{0.1,0.2},{0.2,0.3},{0.3,0.4}, {0.5,0.8} ,{1,0.1}};
 
-    std::cout << "Controls: \n" <<  linear.controls;
+    spline.controls[1] = {0.1,0.25};
 
+    std::cout << "Controls: \n" <<  spline.controls << std::endl;
+
+    std::cout << "Test bounds: " << spline.test_bounds(0.5).value_or(-100) << std::endl;
+
+    matlab::utils::print(spline);
 }

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include "dehancer/properties.hpp"
 
 namespace dehancer {
     namespace observable {
@@ -31,12 +32,29 @@ namespace dehancer {
                     on_update_(on_update)
             {}
 
-            void operator = (const T& data) {
+            Aproxy& operator = (const T& data) {
                 *data_ = data;
                 if (on_update_) {
                     on_update_(*root_);
                 }
+                return *this;
             }
+
+            Aproxy& operator = (const Aproxy& a) {
+                *data_ = *a.data_;
+                root_ = a.root_;
+                if (on_update_) {
+                    on_update_(*root_);
+                }
+                return *this;
+            }
+
+//            PROPERTY(point,
+//                     T,
+//                     Aproxy,
+//                     { return get_data();         }, // getter
+//                     {        get_data() = value; }  // setter
+//            );
 
             T& get_data() { return *data_;};
             const T& get_data() const { return *data_;};
@@ -52,8 +70,15 @@ namespace dehancer {
 
             Array() = default;
 
-            explicit Array(const std::vector<T>& value):value_(value){}
-            Array(const Array<T>& value):value_(value.value_){}
+            explicit Array(const std::vector<T>& value){
+                //std::copy(value.begin(), value.end(), std::back_inserter(value_));
+                for (auto v: value) value_.push_back(v);
+            }
+
+            Array(const Array<T>& value){
+                for (auto v: value.value_) value_.push_back(v);
+                //std::copy(value.value_.begin(), value.value_.end(), std::back_inserter(value_));
+            }
 
             Handler<std::vector<T>> on_update = nullptr;
 

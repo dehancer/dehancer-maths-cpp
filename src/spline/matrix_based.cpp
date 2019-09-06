@@ -49,7 +49,7 @@ namespace dehancer {
 
                 math::float4 t = {1, static_cast<float>(u[n]), static_cast<float>(u2[n]), static_cast<float>(u3[n])};
 
-                auto tm =  t.t() * this->get_matrix() ;
+                auto tm = t.t() * this->get_matrix() ;
 
                 sp[n] = {arma::dot(tm,x), arma::dot(tm,y)};
             }
@@ -90,8 +90,8 @@ namespace dehancer {
                 math::float2 p2 = controls[i+1];
                 math::float2 p3 = controls[i+2];
 
-                math::float4 px({p0.x,p1.x,p2.x,p3.x});
-                math::float4 py({p0.y,p1.y,p2.y,p3.y});
+                math::float4 px({p0.x(),p1.x(),p2.x(),p3.x()});
+                math::float4 py({p0.y(),p1.y(),p2.y(),p3.y()});
 
                 spline(s, px, py, nps[ii]);
 

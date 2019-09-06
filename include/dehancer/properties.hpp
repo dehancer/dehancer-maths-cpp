@@ -40,24 +40,27 @@ struct Property
     Outer *instance;
 
     Property(Outer *instance): instance(instance){}
+    Property(): instance(nullptr){}
 
-    operator const T& () const { return (instance->*getter)(); }
-    operator T& ()             { return (instance->*getter)(); }
+    operator const T () const { return (instance->*getter)(); }
+    operator T& ()            { return (instance->*getter)(); }
 
-    Property& operator=(const Property& other) { return *this = (other.instance->*getter)(); }
+    Property& operator=(const Property& other) { *this = (other.instance->*getter)(); return *this; }
 
     Property& operator=(const T& value) { (instance->*setter)(value); return *this; }
+
+    Property& operator=(Outer *value) { instance = value; return *this; }
 
     template<typename OuterIn, typename TIn, TIn (OuterIn::*getter2)(), void (OuterIn::*setter2)(const TIn&)>
     Property& operator=(const Property<OuterIn, TIn, getter2, setter2>& other)
     {
-        return (*this = (other.instance->*getter2)()) ;
+        *this = (other.instance->*getter2)(); return *this ;
     }
 
 };
 
 #define PROPERTY(__PROPS__, __PROPS_TYPE__, __OUTER_CLASS__, __GETTER__, __SETTER__ ) \
-  void set_ ##__PROPS__(const __PROPS_TYPE__& value) __SETTER__;\
+  void set_ ##__PROPS__(const __PROPS_TYPE__& value) {__PROPS__.instance = this; __SETTER__; };\
   __PROPS_TYPE__&  get_ ##__PROPS__() __GETTER__;\
   Property<__OUTER_CLASS__, __PROPS_TYPE__,\
   &__OUTER_CLASS__::get_ ##__PROPS__, &__OUTER_CLASS__::set_ ##__PROPS__> __PROPS__ = this

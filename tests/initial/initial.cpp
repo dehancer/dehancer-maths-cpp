@@ -4,10 +4,21 @@
 
 #include "gtest/gtest.h"
 #include "dehancer/math.hpp"
+#include "../common/matlab_utils.hpp"
 #include <memory>
+
+std::vector<dehancer::math::float2> points = {
+        {0,0},
+        {0.1,0.2},
+        {0.2,0.4},
+        {0.5,0.7},
+        {0.9,0.5},
+        {1,0.3}
+};
 
 TEST(Initial, IitialTest) {
 
+    //std::make_shared()
     std::cerr << std::endl;
     std::cout << std::endl;
 
@@ -15,47 +26,46 @@ TEST(Initial, IitialTest) {
 
     dehancer::observable::Array<dehancer::math::float2> array;
 
-    array.on_update = [](const std::vector<dehancer::math::float2>& vector){
+    array.on_update = [](const std::vector<dehancer::math::float2> &vector) {
         std::cout << vector << std::endl;
     };
 
-    array[0] = {1,42};
-    array[0] = {42,1};
+    array[0] = {1, 42};
+    array[0] = {42, 1};
 
-    arma::mat A = { {1, 3},
-                    {2, 4} };
+    arma::mat A = {{1, 3},
+                   {2, 4}};
 
-    arma::mat B = { {5, 6},
-                    {7, 8} };
+    arma::mat B = {{5, 6},
+                   {7, 8}};
 
-    auto x = arma::solve(A,B);
+    auto x = arma::solve(A, B);
 
     std::cout << "Armadillo equation solution: \n" << x << std::endl;
 
     auto invA = arma::inv(A);
-    auto xx = invA*B;
+    auto xx = invA * B;
 
-    std::cout << "Armadillo equation inv solution: \n" << xx << "\n < \n"<<  (xx == x) << std::endl;
+    std::cout << "Armadillo equation inv solution: \n" << xx << "\n < \n" << (xx == x) << std::endl;
 
-    dehancer::math::float2 f = {1,2};
+    dehancer::math::float2 f = {1, 2};
 
-    f.x  = 1;
-    f.y /= 2 + f.y;
+    f.x() = 10;
+    f.y() /= 2 + f.y();
     std::cout << "Armadillo vector: \n" << f.t() << std::endl;
 
-    auto a = f.t()*A;
+    auto a = f.t() * A;
 
     std::cout << "Armadillo multiple: \n" << a << std::endl;
 
-    dehancer::math::float3 f3 = {1,2,1};
+    dehancer::math::float3 f3 = {1, 2, 1};
 
-    f3.x = 2;
-    f3.y = 1;
+    f3.x() = 2;
+    f3.y() = 1;
 
     std::cout << "Armadillo f3: \n" << f3 << std::endl;
 
-    auto a3x3 = f3*f3.t();
+    auto a3x3 = f3 * f3.t();
 
     std::cout << "Armadillo multiple 3x3: \n" << a3x3 << std::endl;
-
 }

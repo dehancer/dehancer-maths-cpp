@@ -16,7 +16,6 @@ namespace dehancer {
             using MatrixBased::MatrixBased;
             Bezier(const std::vector<math::float2>& controls, size_t resolution = 256);
             virtual const math::float4x4& get_matrix() const override ;
-            virtual ~Bezier() override {}
         };
     }
 }

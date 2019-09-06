@@ -13,6 +13,10 @@ FILE(GLOB PUBLIC_INCLUDE_FILES
         ${CMAKE_SOURCE_DIR}/include/dehancer/*.hpp
         )
 
+FILE(GLOB PUBLIC_DETAILS_INCLUDE_FILES
+        ${CMAKE_SOURCE_DIR}/include/dehancer/details/*.hpp
+        )
+
 FILE(GLOB INCLUDE_FILES
         ${PUBLIC_INCLUDE_FILES}
         )
@@ -63,5 +67,6 @@ configure_package_config_file(
 
 install(TARGETS ${PROJECT_LIB}   DESTINATION lib)
 install(FILES   ${PUBLIC_INCLUDE_FILES} DESTINATION include/dehancer)
+install(FILES   ${PUBLIC_DETAILS_INCLUDE_FILES} DESTINATION include/dehancer/details)
 install(FILES   ${project_config} ${version_config} DESTINATION lib/cmake/${PROJECT_LIB})
 install(FILES cmake/${PROJECT_LIB}.cmake DESTINATION lib/cmake/${PROJECT_LIB})

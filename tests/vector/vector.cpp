@@ -15,8 +15,8 @@ TEST(Initial, IitialTest) {
 
     auto v = dehancer::math::float2({1,2});
 
-    v.y = 10;
+    v.y() = 10;
 
     std::cout << v << std::endl;
-    std::cout << v.y << std::endl;
+    std::cout << v.y() << std::endl;
 }

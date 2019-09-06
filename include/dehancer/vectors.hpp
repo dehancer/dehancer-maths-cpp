@@ -28,22 +28,28 @@ namespace dehancer {
 
             using float_vector::float_vector;
 
-            PROPERTY(x,
-                     float,
-                     float2,
-                     { return (*this)[0];         }, // getter
-                     {        (*this)[0] = value; }  // setter
-            );
+            float& x() { return (*this)[0]; };
+            const float& x() const { return (*this)[0]; };
 
-            PROPERTY(y,
-                     float,
-                     float2,
-                     { return (*this)[1];         }, // getter
-                     {        (*this)[1] = value; }  // setter
-            );
+            float& y() { return (*this)[1]; };
+            const float& y() const { return (*this)[1]; };
+
+
+//            PROPERTY(x,
+//                     float,
+//                     float2,
+//                     { return (*this)[0];         }, // getter
+//                     {        (*this)[0] = value; }  // setter
+//            );
+//
+//            PROPERTY(y,
+//                     float,
+//                     float2,
+//                     { return (*this)[1];         }, // getter
+//                     {        (*this)[1] = value; }  // setter
+//            );
 
             float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
-
         };
 
         class float3: public float_vector<3> {
@@ -109,7 +115,7 @@ namespace dehancer {
                      {        (*this)[3] = value; }  // setter
             );
 
-            float4(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
+            float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
         };
     }
 }

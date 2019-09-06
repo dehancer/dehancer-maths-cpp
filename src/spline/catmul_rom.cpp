@@ -8,17 +8,15 @@ namespace dehancer {
     namespace spline {
 
         CatmulRom::CatmulRom(size_t resolution, float tension):
-                MatrixBased(resolution),
-                tension_(tension)
+                MatrixBased(resolution)
         {
-            set_tension(tension_);
+            set_tension(tension);
         }
 
         CatmulRom::CatmulRom(const std::vector<dehancer::math::float2> &controls, size_t resolution, float tension):
-                MatrixBased(controls,resolution),
-                tension_(tension)
+                MatrixBased(controls,resolution)
         {
-            set_tension(tension_);
+            set_tension(tension);
             evaluate_curve();
         }
 
@@ -26,7 +24,8 @@ namespace dehancer {
             return matrix_;
         }
 
-        void CatmulRom::set_tension(float tension_) {
+        void CatmulRom::set_tension(float tension) {
+            tension_ = tension;
             math::float4x4 matrix = { { 0,  1/tension_,    0,             0},
                                       {-1,  0,             1,             0},
                                       { 2, -3/tension_+1,  3/tension_-2, -1},

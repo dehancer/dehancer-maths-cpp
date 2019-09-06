@@ -31,10 +31,10 @@ namespace dehancer {
                 float2 P0 = curve[k1];
                 float2 P1 = curve[k2];
 
-                auto d = P1.x - P0.x;
-                auto t = d == 0 ? 0 : (x-P0.x)/d;
+                float d = P1.x() - P0.x();
+                auto t = d == 0 ? 0 : (x-P0.x())/d;
 
-                return (1 - t) * P0.y + t * P1.y;
+                return (1 - t) * P0.y() + t * P1.y();
             }
 
             std::tuple<std::size_t,std::size_t> Interpolator::indices(float x) const {
@@ -47,8 +47,8 @@ namespace dehancer {
 
             optional<float> Interpolator::test_bounds(float x) const {
                 auto bounds = get_bounds();
-                if (bounds.left.x>x)  { return make_optional(bounds.left.y); }
-                if (bounds.right.x<x) { return make_optional(bounds.right.y); }
+                if (bounds.left.x()>x)  { return make_optional(bounds.left.y()); }
+                if (bounds.right.x()<x) { return make_optional(bounds.right.y()); }
                 return nullopt;
             }
 
@@ -63,8 +63,10 @@ namespace dehancer {
 
                     auto i = size_t(floor(double(right+left)/2.0));
 
-                    if (controls[i].x > x ) { right = i; }
-                    else                    { left  = i; }
+                    const float p = controls[i][0];
+
+                    if (p > x ) { right = i; }
+                    else        { left  = i; }
                 }
 
                 return std::make_tuple(left,right);

@@ -49,7 +49,7 @@ namespace dehancer {
 
                 math::float4 t = {1, static_cast<float>(u[n]), static_cast<float>(u2[n]), static_cast<float>(u3[n])};
 
-                auto tm =  t.t() * this->get_matrix() ;
+                auto tm = t.t() * this->get_matrix() ;
 
                 sp[n] = {arma::dot(tm,x), arma::dot(tm,y)};
             }

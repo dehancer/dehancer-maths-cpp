@@ -13,6 +13,10 @@ FILE(GLOB PUBLIC_INCLUDE_FILES
         ${CMAKE_SOURCE_DIR}/include/dehancer/*.hpp
         )
 
+FILE(GLOB PUBLIC_SPLINE_INCLUDE_FILES
+        ${CMAKE_SOURCE_DIR}/include/dehancer/spline/*.hpp
+        )
+
 FILE(GLOB PUBLIC_DETAILS_INCLUDE_FILES
         ${CMAKE_SOURCE_DIR}/include/dehancer/details/*.hpp
         )
@@ -65,8 +69,10 @@ configure_package_config_file(
         INSTALL_DESTINATION "${config_install_dir}"
 )
 
+
 install(TARGETS ${PROJECT_LIB}   DESTINATION lib)
 install(FILES   ${PUBLIC_INCLUDE_FILES} DESTINATION include/dehancer)
+install(FILES   ${PUBLIC_SPLINE_INCLUDE_FILES} DESTINATION include/dehancer/spline)
 install(FILES   ${PUBLIC_DETAILS_INCLUDE_FILES} DESTINATION include/dehancer/details)
 install(FILES   ${project_config} ${version_config} DESTINATION lib/cmake/${PROJECT_LIB})
 install(FILES cmake/${PROJECT_LIB}.cmake DESTINATION lib/cmake/${PROJECT_LIB})

@@ -16,7 +16,7 @@ TEST(Interpolation, LinearTest) {
 
     std::cout << "Armadillo version: " << arma::arma_version::as_string() << std::endl;
 
-    spline.controls = {{0,0},{0.1,0.2},{0.2,0.3},{0.3,0.4}, {0.5,0.8} ,{1,0.1}};
+    spline.controls = {{0,0},{0.1,0.2},{0.2,0.3},{0.3,0.4}, {0.5,0.7}, {0.8,0.8} ,{1,0.1}};
 
     spline.controls[1] = {0.1,0.25};
 
@@ -38,4 +38,26 @@ TEST(Interpolation, UtilsTest) {
     auto curve = dehancer::curve::make<dehancer::spline::Linear>(spline.controls, 256);
 
     matlab::utils::print(curve, 3);
+}
+
+TEST(Interpolation, CubicUtilsTest) {
+
+    auto curve1 = dehancer::spline::make<dehancer::spline::Cubic>(spline.controls, 256, 2);
+
+    matlab::utils::print(curve1, 4);
+
+    auto curve2 = dehancer::curve::make<dehancer::spline::Cubic>(spline.controls, 256, 1);
+
+    matlab::utils::print(curve2, 5);
+}
+
+TEST(Interpolation, CatmulRomUtilsTest) {
+
+    auto curve1 = dehancer::spline::make<dehancer::spline::CatmulRom>(spline.controls, 256, 0.2);
+
+    matlab::utils::print(curve1, 6);
+
+    auto curve2 = dehancer::curve::make<dehancer::spline::CatmulRom>(spline.controls, 256, 0.9);
+
+    matlab::utils::print(curve2, 7);
 }

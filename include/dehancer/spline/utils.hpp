@@ -16,7 +16,7 @@ namespace dehancer {
         template<class _Tp, class ..._Args>
         std::vector<math::float2> make(_Args&& ...__args)
         {
-            static_assert( std::is_constructible<_Tp, _Args...>::value, "Can't construct object in make_shared" );
+            static_assert( std::is_constructible<_Tp, _Args...>::value, "Can't construct object in spline::make" );
             auto spline = _Tp(__args ...);
             return spline::make(spline);
         }
@@ -29,7 +29,7 @@ namespace dehancer {
         template<class _Tp, class ..._Args>
         std::vector<float> make(_Args&& ...__args)
         {
-            static_assert( std::is_constructible<_Tp, _Args...>::value, "Can't construct object in make_shared" );
+            static_assert( std::is_constructible<_Tp, _Args...>::value, "Can't construct object in curve::make" );
             auto spline = _Tp(__args ...);
             return curve::make(spline);
         }

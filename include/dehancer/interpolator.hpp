@@ -11,7 +11,7 @@
 #include <functional>
 
 #include "dehancer/vectors.hpp"
-#include "dehancer/optional.hpp"
+#include "dehancer/details/optional.hpp"
 #include "dehancer/scope_guard.hpp"
 #include "dehancer/details/observable_array.hpp"
 

@@ -49,12 +49,12 @@ namespace dehancer {
                 return *this;
             }
 
-//            PROPERTY(point,
-//                     T,
-//                     Aproxy,
-//                     { return get_data();         }, // getter
-//                     {        get_data() = value; }  // setter
-//            );
+            PROPERTY(point,
+                     T,
+                     Aproxy,
+                     { return get_data();         }, // getter
+                     {        get_data() = value; }  // setter
+            );
 
             T& get_data() { return *data_;};
             const T& get_data() const { return *data_;};

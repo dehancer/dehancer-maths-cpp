@@ -3,11 +3,11 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: capy-amqp-cpp
-Description: Capy memcache layer SDK
+Name: dehancer-common-cpp
+Description: Dehancer math layer SDK
 Version: @PROJECT_VERSION@
-URL: https://github.com/aithea/capy-memcached-cpp
+URL: https://github.com/dehacner/dehancer-math-cpp
 Requires.private: @requires_private@
-Libs: -L${libdir} -lcapy_memcached_cpp
+Libs: -L${libdir} -ldehancer_math_cpp
 Libs.private: @libs_private@
 CFlags: -I${includedir}

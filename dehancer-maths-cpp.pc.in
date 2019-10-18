@@ -6,8 +6,8 @@ includedir=@includedir@
 Name: dehancer-common-cpp
 Description: Dehancer math layer SDK
 Version: @PROJECT_VERSION@
-URL: https://github.com/dehacner/dehancer-math-cpp
+URL: https://github.com/dehancer/dehancer-maths-cpp
 Requires.private: @requires_private@
-Libs: -L${libdir} -ldehancer_math_cpp
+Libs: -L${libdir} -ldehancer_maths_cpp
 Libs.private: @libs_private@
 CFlags: -I${includedir}

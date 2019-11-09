@@ -59,6 +59,8 @@ namespace dehancer {
 
             auto cpn = controls.size();
             auto ni  = cpn - (minimum_controls()-1);
+            if (ni == 0)
+                return;
             auto npf = resolution/ni;
             auto npl = resolution - (npf * (ni - 1));
 
@@ -93,9 +95,9 @@ namespace dehancer {
                 math::float4 px({p0.x(),p1.x(),p2.x(),p3.x()});
                 math::float4 py({p0.y(),p1.y(),p2.y(),p3.y()});
 
-                spline(s, px, py, nps[ii]);
+                spline(s, px, py, nps[ii++]);
 
-                ii += 1;
+                //ii += 1;
 
                 std::copy (s.begin(), s.end(), std::back_inserter(curve_));
             }

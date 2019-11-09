@@ -26,12 +26,12 @@ namespace dehancer {
 
         void CatmulRom::set_tension(float tension) {
             tension_ = tension;
-            math::float4x4 matrix = { { 0,  1/tension_,    0,             0},
-                                      {-1,  0,             1,             0},
-                                      { 2, -3/tension_+1,  3/tension_-2, -1},
-                                      {-1,  2/tension_-1, -2/tension_+1,  1}
+            math::float4x4 matrix = { { 0,           1,             0,               0},
+                                      {-tension_,    0,             tension_,        0},
+                                      { 2*tension_,  tension_-3,    3-2*tension_,   -tension_},
+                                      {-tension_,    2-tension_,    tension_-2,      tension_}
             };
-            matrix_ = tension_ * matrix;
+            matrix_ =  matrix;
         }
     }
 }

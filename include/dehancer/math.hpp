@@ -11,4 +11,5 @@
 #include "dehancer/spline/bezier.hpp"
 #include "dehancer/spline/catmul_rom.hpp"
 #include "dehancer/spline/cubic.hpp"
+#include "dehancer/spline/bspline.hpp"
 #include "dehancer/spline/utils.hpp"

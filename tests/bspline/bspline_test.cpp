@@ -16,28 +16,28 @@ std::vector<dehancer::math::float2> points = {
 //        {0.9,0.5},
 //        {1,0.3}
 
-//        {0,     0},
-//        {0.8,   0.6},
-//        {0.95,  0.95},
-//        {1,     1}
-
         {0,     0},
-        {0.01,  0.01},
-        {0.02,  0.02},
-        {0.2,   0.35},
-        {0.8,   0.8},
-        {0.9,   0.9},
-        {0.99,  0.99},
+        {0,     0},
+        {0.8,   0.65},
+        {0.98,  0.98},
+        {1,     1},
         {1,     1}
+
+//        {0,     0},
+//        {0,     0},
+//        {0.01,  0.01},
+//        {0.2,   0.35},
+//        {1,     1},
+//        {1,     1}
 
 };
 
-class ExposureCatmulRom: public dehancer::spline::CatmulRom {
+class ExposureSpline: public dehancer::spline::CatmulRom {
 public:
 public:
     using dehancer::spline::CatmulRom::CatmulRom;
-    ExposureCatmulRom(const std::vector<dehancer::math::float2>& controls) :
-            dehancer::spline::CatmulRom(controls,256,0.7) {}
+    ExposureSpline(const std::vector<dehancer::math::float2>& controls) :
+            dehancer::spline::CatmulRom(controls, 256, 0.5) {}
 };
 
 
@@ -46,7 +46,7 @@ TEST(Interpolation, CatmulRomTest) {
     std::cerr << std::endl;
     std::cout << std::endl;
 
-    auto spline = ExposureCatmulRom(points);
+    auto spline = ExposureSpline(points);
 
     matlab::utils::print(spline,1);
 }

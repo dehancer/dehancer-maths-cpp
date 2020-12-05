@@ -10,16 +10,16 @@ project(${PROJECT_LIB} VERSION 0.1.4)
 # Options
 #
 option(BUILD_TESTING "Enable creation of Armadilli tests." OFF)
-option(DEHACNER_TARGET_ARCH "")
+option(DEHANCER_TARGET_ARCH "")
 
-if (DEHACNER_TARGET_ARCH)
+if (DEHANCER_TARGET_ARCH)
     #
     # x86_64-apple-macos10.13
     # or
     # arm64-apple-macos11
     #
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target ${DEHACNER_TARGET_ARCH}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHACNER_TARGET_ARCH}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
 endif ()
 
 #
@@ -159,7 +159,7 @@ else()
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             -DBUILD_TESTING=OFF
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DDEHACNER_TARGET_ARCH=${DEHACNER_TARGET_ARCH}
+            -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             )
 
     set(COMMON_DEPENDECIES ${COMMON_DEPENDECIES};armadillo-lib)

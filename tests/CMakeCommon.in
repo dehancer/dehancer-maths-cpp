@@ -22,11 +22,11 @@ target_link_libraries(
         ${COMMON_LIBRARIES}
 )
 
-if (COMMON_DEPENDECIES)
-    message(STATUS "${TEST} DEPENDECIES: ${COMMON_DEPENDECIES}")
+if (COMMON_DEPENDENCIES)
+    message(STATUS "${TEST} DEPENDENCIES: ${COMMON_DEPENDENCIES}")
     add_dependencies(
             ${TEST}
-            ${COMMON_DEPENDECIES}
+            ${COMMON_DEPENDENCIES}
     )
 endif ()
 

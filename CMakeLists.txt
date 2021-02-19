@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.1.4)
+project(${PROJECT_LIB} VERSION 0.1.9)
 
 #
 # Options
@@ -122,20 +122,37 @@ include(ExternalProject)
 #
 # External project dependencies
 #
-set(COMMON_DEPENDECIES)
+set(COMMON_DEPENDENCIES)
 set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT};${MKL_LIBRARIES})
 
 #
-# Google Test
+# Google TEST
 #
 find_package(GTest)
 if (NOT GTEST_FOUND)
     ExternalProject_Add(googletest
             GIT_REPOSITORY https://github.com/google/googletest
-            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            CMAKE_ARGS
+            -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+            -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
+            -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+            -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
             )
-    set(COMMON_DEPENDECIES googletest)
-endif ()
+    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};googletest)
+
+    include_directories(
+            ./
+            ../include
+            ${CMAKE_BINARY_DIR}/external/include
+    )
+
+    link_directories(
+            ${CMAKE_BINARY_DIR}/external/lib
+    )
+
+endif()
 
 pkg_check_modules(armadillo armadillo)
 
@@ -162,7 +179,7 @@ else()
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             )
 
-    set(COMMON_DEPENDECIES ${COMMON_DEPENDECIES};armadillo-lib)
+    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillo-lib)
     set(COMMON_LIBRARIES ${COMMON_LIBRARIES};armadillo)
 
     link_directories(

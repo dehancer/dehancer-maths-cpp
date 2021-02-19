@@ -46,8 +46,8 @@ target_include_directories(
         ${EXTERNAL_LOCATION}/nlohmann
 )
 
-if (COMMON_DEPENDECIES)
-    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDECIES})
+if (COMMON_DEPENDENCIES)
+    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
 endif ()
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")

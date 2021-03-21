@@ -112,11 +112,11 @@ namespace dehancer{
                  * Create interpolation object
                  * @param resolution - interpolation resolution
                  */
-                Interpolator(size_t resolution = 256);
+                explicit Interpolator(size_t resolution = 256);
 
-                Interpolator(const std::vector<float2>& controls, size_t resolution = 256);
+                explicit Interpolator(const std::vector<float2>& controls, size_t resolution = 256);
 
-                virtual ~Interpolator();
+                virtual ~Interpolator() = default;
 
             private:
                 size_t resolution_;

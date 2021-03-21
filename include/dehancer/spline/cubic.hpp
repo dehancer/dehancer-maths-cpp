@@ -15,16 +15,18 @@ namespace dehancer {
         public:
             using math::protocol::Interpolator::Interpolator;
 
-            Cubic(size_t resolution = 256, float second_derivative=1);
-            Cubic(const std::vector<math::float2>& controls, size_t resolution = 256, float second_derivative=1);
+            explicit Cubic(size_t resolution = 256, float second_derivative=1);
+            explicit Cubic(const std::vector<math::float2>& controls, size_t resolution = 256, float second_derivative=1);
 
             void  set_second_derivative(float second_derivative);
             float get_second_derivative() const { return second_derivative_;}
 
-            virtual size_t minimum_controls() const override ;
+            size_t minimum_controls() const override ;
 
-            virtual float value(float x) const override ;
+            float value(float x) const override ;
 
+            ~Cubic() override = default;
+            
         private:
             std::vector<float> coeffs_;
             float second_derivative_;

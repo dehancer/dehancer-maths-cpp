@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.1.9)
+project(${PROJECT_LIB} VERSION 0.2.0)
 
 #
 # Options
@@ -33,8 +33,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=hidden -Wno-unused-command-line-argument")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
-
-set(CMAKE_LINK_LIBRARY_FILE_FLAG "${CMAKE_LINK_LIBRARY_FILE_FLAG} -Wl, -fvisibility=hidden")
 
 # googletes, etc
 set (EXTERNAL_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/external)
@@ -128,31 +126,35 @@ set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_I
 #
 # Google TEST
 #
-find_package(GTest)
-if (NOT GTEST_FOUND)
-    ExternalProject_Add(googletest
-            GIT_REPOSITORY https://github.com/google/googletest
-            CMAKE_ARGS
-            -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-            -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-            -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
-            -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
-            -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-            )
-    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};googletest)
+if (BUILD_TESTING)
+    find_package(GTest)
+    if (NOT GTEST_FOUND)
+        ExternalProject_Add(googletest
+                GIT_REPOSITORY https://github.com/google/googletest
+                CMAKE_ARGS
+                -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
+                -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
+                -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+                -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+                -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+                PREFIX ${CMAKE_BINARY_DIR}/tmp
+                )
+        set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};googletest)
 
-    include_directories(
-            ./
-            ../include
-            ${CMAKE_BINARY_DIR}/external/include
-    )
+        include_directories(
+                ./
+                ../include
+                ${CMAKE_BINARY_DIR}/external/include
+        )
 
-    link_directories(
-            ${CMAKE_BINARY_DIR}/external/lib
-    )
+        link_directories(
+                ${CMAKE_BINARY_DIR}/external/lib
+        )
 
-endif()
+    endif()
+endif ()
 
 pkg_check_modules(armadillo armadillo)
 
@@ -164,7 +166,7 @@ if (armadillo_FOUND)
     link_directories(
             ${armadillo_LIBRARY_DIRS}
     )
-    set(COMMON_LIBRARIES ${COMMON_LIBRARIES};${armadillo_LIBRARIES})
+    set(COMMON_LIBRARIES ${armadillo_LIBRARIES};${COMMON_LIBRARIES})
 
 else()
 
@@ -177,10 +179,12 @@ else()
             -DBUILD_TESTING=OFF
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
+            -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+            PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 
     set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillo-lib)
-    set(COMMON_LIBRARIES ${COMMON_LIBRARIES};armadillo)
+    set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
 
     link_directories(
             ${CMAKE_BINARY_DIR}/external/lib

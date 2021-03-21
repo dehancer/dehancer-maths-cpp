@@ -15,15 +15,15 @@ namespace dehancer {
         public:
             using math::protocol::Interpolator::Interpolator;
 
-            MatrixBased(size_t resolution = 256);
+            explicit MatrixBased(size_t resolution = 256);
 
-            MatrixBased(const std::vector<math::float2>& controls, size_t resolution = 256);
+            explicit MatrixBased(const std::vector<math::float2>& controls, size_t resolution = 256);
 
-            virtual ~MatrixBased() override {}
+            ~MatrixBased() override = default;
 
-            virtual size_t minimum_controls() const override ;
+            size_t minimum_controls() const override ;
 
-            virtual float value(float x) const override ;
+            float value(float x) const override ;
 
             virtual const math::float4x4& get_matrix() const = 0;
 

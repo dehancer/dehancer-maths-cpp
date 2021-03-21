@@ -16,9 +16,7 @@ namespace dehancer {
             {
                 controls = controlsIn;
             }
-
-            Interpolator::~Interpolator(){}
-
+            
             float Interpolator::linear(float x) const {
                 return linear(controls,x);
             }

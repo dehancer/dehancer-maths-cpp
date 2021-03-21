@@ -22,6 +22,17 @@ if (DEHANCER_TARGET_ARCH)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
 endif ()
 
+option(DEHANCER_COMMON_DIR  "")
+if (NOT DEHANCER_COMMON_DIR)
+    set(DEHANCER_COMMON_DIR ${CMAKE_BINARY_DIR}/tmp)
+endif ()
+
+option(EXTERNAL_INSTALL_LOCATION  "")
+if (NOT EXTERNAL_INSTALL_LOCATION)
+    set (EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
+endif ()
+
+
 #
 # Global setttings
 #

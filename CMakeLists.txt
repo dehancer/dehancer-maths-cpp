@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.3.0)
+project(${PROJECT_LIB} VERSION 0.3.1)
 
 #
 # Options
@@ -188,6 +188,7 @@ else()
             -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             -DBUILD_TESTING=OFF
+            -DDETECT_HDF5=false
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}

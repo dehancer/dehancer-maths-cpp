@@ -114,7 +114,7 @@ namespace dehancer {
 
                 coeffs_.resize(n+1);
 
-                for (int i = 0; i < n; ++i) {
+                for (size_t i = 0; i < n; ++i) {
                     coeffs_[i] = col[i];
                 }
 

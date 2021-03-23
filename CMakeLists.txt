@@ -39,10 +39,13 @@ endif ()
 set(VERSION_FILE "version.txt")
 set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=hidden -Wno-unused-command-line-argument")
+if (NOT WIN32)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=hidden -Wno-unused-command-line-argument")
+endif ()
+
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 
 # googletes, etc
@@ -118,9 +121,11 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
 
 endif()
 
-if (MSVC)
-    add_definitions (/W4)
-elseif (CMAKE_COMPILER_IS_GNUCXX)
+if (WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc -Wno-deprecated-declarations")
+    add_definitions(/DWIN32=1)
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -rdynamic")
 endif ()
 
 #
@@ -187,11 +192,13 @@ else()
             CMAKE_ARGS
             -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
             -DBUILD_TESTING=OFF
             -DDETECT_HDF5=false
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
             PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 

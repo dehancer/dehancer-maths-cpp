@@ -123,7 +123,7 @@ endif()
 
 if (WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc -Wno-deprecated-declarations")
-    add_definitions(/DWIN32=1)
+    add_definitions(/MT /DWIN32=1 /D_ITERATOR_DEBUG_LEVEL=0)
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -rdynamic")
 endif ()
@@ -148,6 +148,7 @@ if (BUILD_TESTING)
         ExternalProject_Add(googletest
                 GIT_REPOSITORY https://github.com/google/googletest
                 CMAKE_ARGS
+                -DCMAKE_BUILD_TYPE=Release
                 -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
                 -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
                 -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -195,7 +196,7 @@ else()
             -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
             -DBUILD_TESTING=OFF
             -DDETECT_HDF5=false
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+            -DCMAKE_BUILD_TYPE=Release
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}

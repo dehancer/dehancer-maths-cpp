@@ -34,7 +34,8 @@ Windows MVSC
     cd /c/vcpkg/
     ./bootstrap-vcpkg.sh
     /c/vcpkg/vcpkg integrate install
-    /c/vcpkg/vcpkg install gtest
+    /c/vcpkg/vcpkg install openblas:x64-windows
+    /c/vcpkg/vcpkg install lapack:x64-windows
 
     # cmake integration
     -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake

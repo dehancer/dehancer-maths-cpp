@@ -39,11 +39,11 @@ struct Property
 {
     Outer *instance;
 
-    explicit Property(Outer *instance): instance(instance){}
+    Property(Outer *instance): instance(instance){}
     Property(): instance(nullptr){}
 
-    explicit operator const T () const { return (instance->*getter)(); }
-    explicit operator T& ()            { return (instance->*getter)(); }
+    operator const T () const { return (instance->*getter)(); }
+    operator T& ()            { return (instance->*getter)(); }
 
     Property& operator=(const Property& other) { *this = (other.instance->*getter)(); return *this; }
 
@@ -71,7 +71,7 @@ struct ReadOnlyProperty
 {
     Outer *instance;
 
-    explicit ReadOnlyProperty(Outer *instance)
+    ReadOnlyProperty(Outer *instance)
             : instance(instance)
     {
     }

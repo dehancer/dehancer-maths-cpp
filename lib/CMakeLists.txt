@@ -47,7 +47,7 @@ target_include_directories(
 )
 
 if (COMMON_DEPENDENCIES)
-    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
+    #add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
 endif ()
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
@@ -69,6 +69,16 @@ configure_package_config_file(
         INSTALL_DESTINATION "${config_install_dir}"
 )
 
+
+FILE(GLOB PUBLIC_ARMADILLO_INCLUDE_FILES
+        ${EXTERNAL_INSTALL_LOCATION}/include/armadillo
+        )
+FILE(GLOB PUBLIC_ARMADILLO_LIB_FILES
+        ${EXTERNAL_INSTALL_LOCATION}/lib/*armadillo*.*
+        )
+install(FILES   ${PUBLIC_ARMADILLO_INCLUDE_FILES} DESTINATION include)
+install(DIRECTORY   ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits DESTINATION include)
+install(FILES   ${PUBLIC_ARMADILLO_LIB_FILES} DESTINATION lib)
 
 install(TARGETS ${PROJECT_LIB}   DESTINATION lib)
 install(FILES   ${PUBLIC_INCLUDE_FILES} DESTINATION include/dehancer)

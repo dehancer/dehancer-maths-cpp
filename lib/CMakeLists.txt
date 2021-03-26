@@ -34,6 +34,8 @@ add_library(
         ${PROJECT_LIB}
         ${SOURCES})
 
+add_dependencies(${PROJECT_LIB} armadillolib)
+
 target_link_libraries (
         ${PROJECT_LIB}  PUBLIC
 )
@@ -45,10 +47,6 @@ target_include_directories(
         ${EXTERNAL_INCLUDE_DIR}
         ${EXTERNAL_LOCATION}/nlohmann
 )
-
-if (COMMON_DEPENDENCIES)
-    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
-endif ()
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
@@ -76,8 +74,8 @@ FILE(GLOB PUBLIC_ARMADILLO_INCLUDE_FILES
 FILE(GLOB PUBLIC_ARMADILLO_LIB_FILES
         ${EXTERNAL_INSTALL_LOCATION}/lib/*armadillo*.*
         )
-install(FILES   ${PUBLIC_ARMADILLO_INCLUDE_FILES} DESTINATION include)
 install(DIRECTORY   ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits DESTINATION include)
+install(FILES   ${PUBLIC_ARMADILLO_INCLUDE_FILES} DESTINATION include)
 install(FILES   ${PUBLIC_ARMADILLO_LIB_FILES} DESTINATION lib)
 
 install(TARGETS ${PROJECT_LIB}   DESTINATION lib)

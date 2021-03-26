@@ -34,6 +34,8 @@ add_library(
         ${PROJECT_LIB}
         ${SOURCES})
 
+add_dependencies(${PROJECT_LIB} armadillolib)
+
 target_link_libraries (
         ${PROJECT_LIB}  PUBLIC
 )
@@ -45,10 +47,6 @@ target_include_directories(
         ${EXTERNAL_INCLUDE_DIR}
         ${EXTERNAL_LOCATION}/nlohmann
 )
-
-if (COMMON_DEPENDENCIES)
-    #add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
-endif ()
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
 set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
@@ -69,20 +67,45 @@ configure_package_config_file(
         INSTALL_DESTINATION "${config_install_dir}"
 )
 
+if (NOT CMAKE_INSTALL_LIBDIR)
+    set(CMAKE_INSTALL_LIBDIR lib)
+endif ()
 
-FILE(GLOB PUBLIC_ARMADILLO_INCLUDE_FILES
-        ${EXTERNAL_INSTALL_LOCATION}/include/armadillo
-        )
-FILE(GLOB PUBLIC_ARMADILLO_LIB_FILES
-        ${EXTERNAL_INSTALL_LOCATION}/lib/*armadillo*.*
-        )
-install(FILES   ${PUBLIC_ARMADILLO_INCLUDE_FILES} DESTINATION include)
-install(DIRECTORY   ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits DESTINATION include)
-install(FILES   ${PUBLIC_ARMADILLO_LIB_FILES} DESTINATION lib)
+if (NOT CMAKE_INSTALL_INCLUDEDIR)
+    set(CMAKE_INSTALL_INCLUDEDIR include)
+endif ()
 
-install(TARGETS ${PROJECT_LIB}   DESTINATION lib)
-install(FILES   ${PUBLIC_INCLUDE_FILES} DESTINATION include/dehancer)
-install(FILES   ${PUBLIC_SPLINE_INCLUDE_FILES} DESTINATION include/dehancer/spline)
-install(FILES   ${PUBLIC_DETAILS_INCLUDE_FILES} DESTINATION include/dehancer/details)
-install(FILES   ${project_config} ${version_config} DESTINATION lib/cmake/${PROJECT_LIB})
-install(FILES cmake/${PROJECT_LIB}.cmake DESTINATION lib/cmake/${PROJECT_LIB})
+install(DIRECTORY
+        ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        FILES_MATCHING
+        PATTERN *
+        PATTERN gtest* EXCLUDE
+        PATTERN gmock* EXCLUDE
+        )
+
+install(DIRECTORY
+        ${EXTERNAL_INSTALL_LOCATION}/include
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/..
+        FILES_MATCHING
+        PATTERN armadillo
+        PATTERN dehancer* EXCLUDE
+        PATTERN gtest* EXCLUDE
+        PATTERN gmock* EXCLUDE
+        )
+
+install(DIRECTORY
+        ${EXTERNAL_INSTALL_LOCATION}/lib
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/..
+        FILES_MATCHING
+        PATTERN *armadillo*.*
+        PATTERN *gtest* EXCLUDE
+        PATTERN *gmock* EXCLUDE
+        )
+
+install(FILES   ${PUBLIC_INCLUDE_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dehancer)
+install(FILES   ${PUBLIC_SPLINE_INCLUDE_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dehancer/spline)
+install(FILES   ${PUBLIC_DETAILS_INCLUDE_FILES} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/dehancer/details)
+install(FILES   ${project_config} ${version_config} DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_LIB})
+install(FILES cmake/${PROJECT_LIB}.cmake DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_LIB})
+install(TARGETS ${PROJECT_LIB}   DESTINATION ${CMAKE_INSTALL_LIBDIR})

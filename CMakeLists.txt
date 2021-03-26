@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.12)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.3.1)
+project(${PROJECT_LIB} VERSION 0.5.0)
 
 #
 # Options
@@ -195,7 +195,7 @@ if (armadillo_FOUND)
 
 else()
 
-    ExternalProject_Add(armadillo-lib
+    ExternalProject_Add(armadillolib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
             GIT_TAG 9.700.x
             CMAKE_ARGS
@@ -214,7 +214,7 @@ else()
             PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 
-    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillo-lib)
+    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillolib)
     set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
 
     link_directories(

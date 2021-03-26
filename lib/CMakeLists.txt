@@ -47,7 +47,7 @@ target_include_directories(
 )
 
 if (COMMON_DEPENDENCIES)
-    #add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
+    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
 endif ()
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")

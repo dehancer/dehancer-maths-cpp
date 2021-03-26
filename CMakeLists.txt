@@ -11,6 +11,7 @@ project(${PROJECT_LIB} VERSION 0.3.1)
 #
 option(BUILD_TESTING "Enable creation of Armadilli tests." OFF)
 option(DEHANCER_TARGET_ARCH "")
+option(VCPKG_TARGET_TRIPLET "")
 
 if (DEHANCER_TARGET_ARCH)
     #
@@ -209,6 +210,7 @@ else()
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+            -DVCPKG_TARGET_TRIPLET=x64-windows-static
             PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 

@@ -6,10 +6,15 @@ cmake_minimum_required(VERSION 3.12)
 set(PROJECT_LIB dehancer_maths_cpp)
 project(${PROJECT_LIB} VERSION 0.5.0)
 
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif()
+
+
 #
 # Options
 #
-option(BUILD_TESTING "Enable creation of Armadilli tests." OFF)
+option(BUILD_TESTING "Enable creation of Armadillo tests." OFF)
 option(DEHANCER_TARGET_ARCH "")
 option(VCPKG_TARGET_TRIPLET "")
 
@@ -35,7 +40,7 @@ endif ()
 
 
 #
-# Global setttings
+# Global settings
 #
 set(VERSION_FILE "version.txt")
 set(CMAKE_CXX_STANDARD 11)
@@ -48,7 +53,7 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 endif ()
 
-# googletes, etc
+# googletest, etc
 set (EXTERNAL_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/external)
 set (EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
 set (EXTERNAL_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/include)
@@ -62,8 +67,60 @@ file (WRITE "${VERSION_FILE}" "${PROJECT_NAME} ${PROJECT_VERSION}")
 # Packages
 #
 find_package (PkgConfig QUIET)
+
 find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
+
+if (LINUX)
+    set(DEHANCER_EXT_MATH_LIB)
+
+    set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
+
+    find_library(GFORTRAN_LIBRARY
+            NAMES gfortran
+            PATHS ${FORTRAN_LIB_PATHS}
+            )
+
+    find_library(GQUADMATH_LIBRARY
+            NAMES quadmath
+            PATHS ${FORTRAN_LIB_PATHS}
+            )
+
+    message("GFORTRAN_LIBRARY: ${GFORTRAN_LIBRARY}")
+
+    foreach(v ${BLAS_LIBRARIES})
+        string(REPLACE ".so" ".a" vv ${v})
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+    endforeach()
+
+    foreach(v ${LAPACK_LIBRARIES})
+        string(REPLACE ".so" ".a" vv ${v})
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+    endforeach()
+
+    foreach(v ${GFORTRAN_LIBRARY})
+        string(REPLACE ".so" ".a" vv ${v})
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+    endforeach()
+
+    foreach(v ${GQUADMATH_LIBRARY})
+        string(REPLACE ".so" ".a" vv ${v})
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+    endforeach()
+
+    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
+
+    find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
+
+else()
+    set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
+endif ()
+
+include_directories(${BLAS_INCLUDE_DIRS} ${LAPACK_INCLUDE_DIRS})
+
+message("BLASS/LAPACK: ${DEHANCER_EXT_MATH_LIB}")
+
+
 find_package(Threads REQUIRED)
 
 if(NOT PKG_CONFIG_FOUND)
@@ -141,7 +198,7 @@ include(ExternalProject)
 # External project dependencies
 #
 set(COMMON_DEPENDENCIES)
-set(COMMON_LIBRARIES ${BLAS_LIBRARIES};${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT};${MKL_LIBRARIES})
+set(COMMON_LIBRARIES ${DEHANCER_EXT_MATH_LIB};${CMAKE_THREAD_LIBS_INIT};${MKL_LIBRARIES})
 
 string(STRIP "${CMAKE_C_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" C_FLAGS)
 string(STRIP "${CMAKE_CXX_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" CXX_FLAGS)
@@ -155,6 +212,8 @@ if (BUILD_TESTING)
 
         ExternalProject_Add(googletest
                 GIT_REPOSITORY https://github.com/google/googletest
+                GIT_PROGRESS YES
+                GIT_SHALLOW YES
                 CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
@@ -197,6 +256,8 @@ else()
 
     ExternalProject_Add(armadillolib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
+            GIT_PROGRESS YES
+            GIT_SHALLOW YES
             GIT_TAG 9.700.x
             CMAKE_ARGS
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
@@ -210,7 +271,7 @@ else()
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
             -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-            -DVCPKG_TARGET_TRIPLET=x64-windows-static
+            -DVCPKG_TARGET_TRIPLET=${VCPKG_TARGET_TRIPLET}
             PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 

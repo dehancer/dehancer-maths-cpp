@@ -34,7 +34,9 @@ add_library(
         ${PROJECT_LIB}
         ${SOURCES})
 
-add_dependencies(${PROJECT_LIB} armadillolib)
+if (COMMON_DEPENDENCIES)
+    add_dependencies(${PROJECT_LIB} ${COMMON_DEPENDENCIES})
+endif ()
 
 target_link_libraries (
         ${PROJECT_LIB}  PUBLIC

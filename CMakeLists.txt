@@ -49,7 +49,7 @@ set(CMAKE_CXX_STANDARD 11)
 if (NOT WIN32)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=hidden -Wno-unused-command-line-argument")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=default -Wno-unused-command-line-argument")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 endif ()
 
@@ -159,7 +159,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     message(STATUS "Using gcc" )
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -W -Wall -Wextra -Wno-ignored-qualifiers -Wvariadic-macros -pthread -static-libgcc -static-libstdc++")
-    set(CMAKE_CXX_FLAGS "-fvisibility=hidden -Wno-pedantic")
+    set(CMAKE_CXX_FLAGS "-fvisibility=default -Wno-pedantic")
     set(CMAKE_LINK_DEPENDS_NO_SHARED TRUE)
 
     add_compile_options(-lpthread)
@@ -214,6 +214,7 @@ if (BUILD_TESTING)
                 GIT_REPOSITORY https://github.com/google/googletest
                 GIT_PROGRESS YES
                 GIT_SHALLOW YES
+                GIT_TAG release-1.11.0
                 CMAKE_ARGS
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}

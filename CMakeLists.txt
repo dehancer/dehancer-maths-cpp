@@ -241,19 +241,19 @@ if (BUILD_TESTING)
     endif()
 endif ()
 
-#pkg_check_modules(armadillo armadillo)
-#
-#if (armadillo_FOUND)
-#
-#    include_directories(
-#            ${armadillo_INCLUDE_DIRS}
-#    )
-#    link_directories(
-#            ${armadillo_LIBRARY_DIRS}
-#    )
-#    set(COMMON_LIBRARIES ${armadillo_LIBRARIES};${COMMON_LIBRARIES})
-#
-#else()
+pkg_check_modules(armadillo armadillo)
+
+if (armadillo_FOUND)
+
+    include_directories(
+            ${armadillo_INCLUDE_DIRS}
+    )
+    link_directories(
+            ${armadillo_LIBRARY_DIRS}
+    )
+    set(COMMON_LIBRARIES ${armadillo_LIBRARIES};${COMMON_LIBRARIES})
+
+else()
 
     ExternalProject_Add(armadillolib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
@@ -283,7 +283,7 @@ endif ()
             ${CMAKE_BINARY_DIR}/external/lib
     )
 
-#endif()
+endif()
 
 
 #

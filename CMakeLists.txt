@@ -72,6 +72,8 @@ find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 
 if (LINUX)
+    set(CMAKE_INSTALL_LIBDIR  "lib")
+
     set(DEHANCER_EXT_MATH_LIB)
 
     set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
@@ -88,26 +90,27 @@ if (LINUX)
 
     message("GFORTRAN_LIBRARY: ${GFORTRAN_LIBRARY}")
 
-    foreach(v ${BLAS_LIBRARIES})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
+#    foreach(v ${BLAS_LIBRARIES})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${LAPACK_LIBRARIES})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${GFORTRAN_LIBRARY})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${GQUADMATH_LIBRARY})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
 
-    foreach(v ${LAPACK_LIBRARIES})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
-    foreach(v ${GFORTRAN_LIBRARY})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
-    foreach(v ${GQUADMATH_LIBRARY})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
+    set(DEHANCER_EXT_MATH_LIB ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
     set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
 
     find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
@@ -216,6 +219,7 @@ if (BUILD_TESTING)
                 GIT_SHALLOW YES
                 GIT_TAG release-1.11.0
                 CMAKE_ARGS
+                -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
                 -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
@@ -261,6 +265,7 @@ else()
             GIT_SHALLOW YES
             GIT_TAG 9.700.x
             CMAKE_ARGS
+            -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
             -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}

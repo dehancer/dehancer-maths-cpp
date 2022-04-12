@@ -68,8 +68,22 @@ file (WRITE "${VERSION_FILE}" "${PROJECT_NAME} ${PROJECT_VERSION}")
 #
 find_package (PkgConfig QUIET)
 
-find_package(BLAS REQUIRED)
-find_package(LAPACK REQUIRED)
+if(LINUX)
+
+    find_package (lapack)
+
+    if (LAPACK_NOT_FOUND)
+        message(FATAL "LAPACK has not bin found at all. $ git clone https://github.com/Reference-LAPACK/lapack-release and install")
+    else()
+        message("LAPACK LIBRARY: ${LAPACK_LIBRARIES}")
+    endif ()
+
+else()
+
+    find_package (LAPACK REQUIRED)
+    find_package (BLAS REQUIRED)
+
+endif()
 
 if (LINUX)
     set(CMAKE_INSTALL_LIBDIR  "lib")
@@ -110,8 +124,8 @@ if (LINUX)
 #        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
 #    endforeach()
 
-    set(DEHANCER_EXT_MATH_LIB ${LAPACK_LIBRARIES} ${BLAS_LIBRARIES})
-    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
+    set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
+    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};gfortran;m)
 
     find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
 

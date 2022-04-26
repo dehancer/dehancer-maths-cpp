@@ -77,6 +77,7 @@ if (NOT CMAKE_INSTALL_INCLUDEDIR)
     set(CMAKE_INSTALL_INCLUDEDIR include)
 endif ()
 
+if (NOT armadillo_FOUND)
 install(DIRECTORY
         ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
@@ -85,6 +86,7 @@ install(DIRECTORY
         PATTERN gtest* EXCLUDE
         PATTERN gmock* EXCLUDE
         )
+endif ()
 
 install(DIRECTORY
         ${EXTERNAL_INSTALL_LOCATION}/include

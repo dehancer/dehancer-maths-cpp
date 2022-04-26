@@ -68,10 +68,27 @@ file (WRITE "${VERSION_FILE}" "${PROJECT_NAME} ${PROJECT_VERSION}")
 #
 find_package (PkgConfig QUIET)
 
-find_package(BLAS REQUIRED)
-find_package(LAPACK REQUIRED)
+if(LINUX)
+
+    find_package (lapack)
+
+    if (LAPACK_NOT_FOUND)
+        message(FATAL "LAPACK has not bin found at all. $ git clone https://github.com/Reference-LAPACK/lapack-release and install")
+    else()
+        message("LAPACK LIBRARY: ${LAPACK_LIBRARIES}")
+    endif ()
+
+else()
+
+    find_package (LAPACK REQUIRED)
+    find_package (BLAS REQUIRED)
+
+endif()
+
+set(CMAKE_INSTALL_LIBDIR  "lib")
 
 if (LINUX)
+
     set(DEHANCER_EXT_MATH_LIB)
 
     set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
@@ -88,27 +105,28 @@ if (LINUX)
 
     message("GFORTRAN_LIBRARY: ${GFORTRAN_LIBRARY}")
 
-    foreach(v ${BLAS_LIBRARIES})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
+#    foreach(v ${BLAS_LIBRARIES})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${LAPACK_LIBRARIES})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${GFORTRAN_LIBRARY})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
+#
+#    foreach(v ${GQUADMATH_LIBRARY})
+#        string(REPLACE ".so" ".a" vv ${v})
+#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
+#    endforeach()
 
-    foreach(v ${LAPACK_LIBRARIES})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
-    foreach(v ${GFORTRAN_LIBRARY})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
-    foreach(v ${GQUADMATH_LIBRARY})
-        string(REPLACE ".so" ".a" vv ${v})
-        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-    endforeach()
-
-    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
+    set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
+    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};gfortran;m)
 
     find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
 
@@ -216,15 +234,19 @@ if (BUILD_TESTING)
                 GIT_SHALLOW YES
                 GIT_TAG release-1.11.0
                 CMAKE_ARGS
-                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
                 -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-                -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-                -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
+#                -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
                 -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+                -DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
+                -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
                 -DCMAKE_C_FLAGS=${C_FLAGS}
                 -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
-                PREFIX ${CMAKE_BINARY_DIR}/tmp
+                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+                -DEXTERNAL_INSTALL_LOCATION=${EXTERNAL_INSTALL_LOCATION}
+                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
                 )
         set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};googletest)
 
@@ -241,19 +263,20 @@ if (BUILD_TESTING)
     endif()
 endif ()
 
-#pkg_check_modules(armadillo armadillo)
-#
-#if (armadillo_FOUND)
-#
-#    include_directories(
-#            ${armadillo_INCLUDE_DIRS}
-#    )
-#    link_directories(
-#            ${armadillo_LIBRARY_DIRS}
-#    )
-#    set(COMMON_LIBRARIES ${armadillo_LIBRARIES};${COMMON_LIBRARIES})
-#
-#else()
+pkg_check_modules(armadillo armadillo)
+
+if (armadillo_FOUND)
+
+    message("Armadillo: ${armadillo_INCLUDE_DIRS}, ${armadillo_LIBRARY_DIRS}")
+    include_directories(
+            ${armadillo_INCLUDE_DIRS}
+    )
+    link_directories(
+            ${armadillo_LIBRARY_DIRS}
+    )
+    set(COMMON_LIBRARIES ${COMMON_LIBRARIES};${armadillo_LIBRARIES})
+
+else()
 
     ExternalProject_Add(armadillolib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
@@ -261,8 +284,10 @@ endif ()
             GIT_SHALLOW YES
             GIT_TAG 9.700.x
             CMAKE_ARGS
+            -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
+            -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+            -DEXTERNAL_INSTALL_LOCATION=${EXTERNAL_INSTALL_LOCATION}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
             -DCMAKE_C_FLAGS=${C_FLAGS}
@@ -270,9 +295,11 @@ endif ()
             -DBUILD_TESTING=OFF
             -DDETECT_HDF5=false
             -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
-            -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
             -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
             -DVCPKG_TARGET_TRIPLET=${VCPKG_TARGET_TRIPLET}
+            -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+            -DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
             PREFIX ${CMAKE_BINARY_DIR}/tmp
             )
 
@@ -283,7 +310,7 @@ endif ()
             ${CMAKE_BINARY_DIR}/external/lib
     )
 
-#endif()
+endif()
 
 
 #

@@ -11,8 +11,7 @@
 #define SG_REQUIRE_NOEXCEPT
 #endif
 
-namespace dehancer
-{
+namespace dehancer{
     namespace detail
     {
         /* --- Some custom type traits --- */
@@ -94,8 +93,7 @@ namespace dehancer
         public:
             typedef Callback callback_type;
 
-            scope_guard(scope_guard&& other)
-            noexcept(std::is_nothrow_constructible<Callback, Callback&&>::value);
+            scope_guard(scope_guard&& other) noexcept (std::is_nothrow_constructible<Callback, Callback&&>::value);
 
             ~scope_guard() noexcept; // highlight noexcept dtor
 

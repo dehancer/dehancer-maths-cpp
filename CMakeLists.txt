@@ -43,7 +43,7 @@ endif ()
 # Global settings
 #
 set(VERSION_FILE "version.txt")
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 
 if (NOT WIN32)

@@ -15,9 +15,7 @@
 #include "dehancer/scope_guard.hpp"
 #include "dehancer/details/observable_array.hpp"
 
-namespace dehancer{
-
-    namespace math {
+namespace dehancer::math {
 
         using namespace tl;
 
@@ -123,5 +121,4 @@ namespace dehancer{
             };
         }
     }
-}
 

@@ -8,9 +8,7 @@
 #include "dehancer/properties.hpp"
 #include "dehancer/details/observable_array.hpp"
 
-namespace dehancer {
-
-    namespace math {
+namespace dehancer::math {
 
         /**
          * N-dimensions column float vector
@@ -88,4 +86,3 @@ namespace dehancer {
             float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
         };
     }
-}

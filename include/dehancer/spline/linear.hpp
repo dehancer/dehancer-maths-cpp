@@ -14,8 +14,8 @@ namespace dehancer {
         public:
             using math::protocol::Interpolator::Interpolator;
 
-            virtual size_t minimum_controls() const;
-            virtual float value(float x) const;
+            size_t minimum_controls() const override;
+            float value(float x) const override;
         };
     }
 }

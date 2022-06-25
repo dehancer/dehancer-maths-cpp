@@ -32,8 +32,16 @@ namespace dehancer::math {
                 }
             }
         }
-
-        Channel& Channel::clamp(int index, float value) {
+    
+    Channel Histogram::get_channel (int i) const {
+      return channels_[i];
+    }
+    
+    Channel Histogram::get_channel (Channel::Index i) const {
+      return get_channel (static_cast<int>(i)) ;
+    }
+    
+    Channel& Channel::clamp(int index, float value) {
             if (index >= size()) return *this;
             if (index < 0 ) return *this;
             (*this)[index] = value;

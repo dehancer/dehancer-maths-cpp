@@ -17,6 +17,13 @@ namespace dehancer::math {
         public:
             using arma::frowvec::frowvec;
 
+            enum class Index:int {
+                red = 0,
+                green = 1,
+                blue = 2,
+                luma = 3
+            };
+            
             /**
              * Integrate channel
              * @param s - scale integrated values
@@ -116,8 +123,15 @@ namespace dehancer::math {
              * @param i - channel index
              * @return channel
              */
-            [[nodiscard]] Channel get_channel(int i) const { return channels_[i]; };
-
+            [[nodiscard]] Channel get_channel(int i) const;
+    
+            /**
+             * Get certain channel by named index
+             * @param i
+             * @return channel
+             */
+            [[nodiscard]] Channel get_channel(Channel::Index i) const;
+    
             /**
              * Histogram size
              * @return length and number of channels

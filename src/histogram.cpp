@@ -109,9 +109,9 @@ namespace dehancer::math {
 
             auto ths = vec
                     .clamp(static_cast<int>(size()-1),0)
-                    .integrate(1.0)
-                    .scale(1.0)
-                    .threshold(1.0-clipping, 1.0);
+                    .integrate(1.0f)
+                    .scale(1.0f)
+                    .threshold(1.0f-clipping, 1.0);
 
             auto [index, nums] = ths.find_zero_crossings(1);
 
@@ -127,9 +127,9 @@ namespace dehancer::math {
 
             auto ths = vec
                     .clamp(0,0)
-                    .integrate(1.0)
-                    .scale(1.0)
-                    .threshold(clipping, 1.0);
+                    .integrate(1.0f)
+                    .scale(1.0f)
+                    .threshold(clipping, 1.0f);
 
             auto [index, nums] = ths.find_zero_crossings(1);
 

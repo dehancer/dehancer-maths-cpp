@@ -3,7 +3,7 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: dehancer-common-cpp
+Name: dehancer-maths-cpp
 Description: Dehancer math layer SDK
 Version: @PROJECT_VERSION@
 URL: https://github.com/dehancer/dehancer-maths-cpp

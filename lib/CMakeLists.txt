@@ -103,6 +103,7 @@ install(DIRECTORY
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/..
         FILES_MATCHING
         PATTERN *armadillo*.*
+        PATTERN armadillo.pc EXCLUDE
         PATTERN *gtest* EXCLUDE
         PATTERN *gmock* EXCLUDE
         )

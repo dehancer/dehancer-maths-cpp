@@ -343,12 +343,13 @@ set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
 
-configure_file(${CMAKE_SOURCE_DIR}/armadillo.pc.in ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc @ONLY)
-
-install(FILES
+if (NOT armadillo_FOUND)
+    configure_file(${CMAKE_SOURCE_DIR}/armadillo.pc.in ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc @ONLY)
+    install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
         )
+endif ()
 
 configure_file(${CMAKE_SOURCE_DIR}/dehancer-maths-cpp.pc.in ${CMAKE_CURRENT_BINARY_DIR}/dehancer-maths-cpp.pc @ONLY)
 

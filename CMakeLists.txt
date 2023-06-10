@@ -267,6 +267,7 @@ pkg_check_modules(armadillo armadillo)
 if (armadillo_FOUND)
 
     message("Armadillo: ${armadillo_INCLUDE_DIRS}, ${armadillo_LIBRARY_DIRS}")
+
     include_directories(
             ${armadillo_INCLUDE_DIRS}
     )
@@ -277,6 +278,8 @@ if (armadillo_FOUND)
 
 else()
 
+    set(ARMA_PATH ${CMAKE_BINARY_DIR}/external)
+
     ExternalProject_Add(armadillolib
             GIT_REPOSITORY https://github.com/dehancer/armadillo-code
             GIT_PROGRESS YES
@@ -285,8 +288,7 @@ else()
             CMAKE_ARGS
             -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
             -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-            #-DEXTERNAL_INSTALL_LOCATION=${EXTERNAL_INSTALL_LOCATION}
+            -DCMAKE_INSTALL_PREFIX=${ARMA_PATH}
             -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
             -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
             -DCMAKE_C_FLAGS=${C_FLAGS}
@@ -305,8 +307,13 @@ else()
     set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillolib)
     set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
 
+
+    include_directories(
+            ${ARMA_PATH}/include
+    )
+
     link_directories(
-            ${CMAKE_BINARY_DIR}/external/lib
+            ${ARMA_PATH}/lib
     )
 
 endif()
@@ -335,6 +342,14 @@ set(prefix ${CMAKE_INSTALL_PREFIX})
 set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+
+if (NOT armadillo_FOUND)
+    configure_file(${CMAKE_SOURCE_DIR}/armadillo.pc.in ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc @ONLY)
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+        )
+endif ()
 
 configure_file(${CMAKE_SOURCE_DIR}/dehancer-maths-cpp.pc.in ${CMAKE_CURRENT_BINARY_DIR}/dehancer-maths-cpp.pc @ONLY)
 

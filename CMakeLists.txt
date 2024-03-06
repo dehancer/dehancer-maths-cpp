@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.22)
 
 #
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.6.7)
+project(${PROJECT_LIB} VERSION 0.7.0)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -18,15 +18,15 @@ option(BUILD_TESTING "Enable creation of Armadillo tests." OFF)
 option(DEHANCER_TARGET_ARCH "")
 option(VCPKG_TARGET_TRIPLET "")
 
-if (DEHANCER_TARGET_ARCH)
-    #
-    # x86_64-apple-macos10.13
-    # or
-    # arm64-apple-macos11
-    #
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
-endif ()
+#if (DEHANCER_TARGET_ARCH)
+
+#     x86_64-apple-macos10.13
+#     or
+#     arm64-apple-macos11
+
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
+#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
+#endif ()
 
 option(DEHANCER_COMMON_DIR  "")
 if (NOT DEHANCER_COMMON_DIR)
@@ -52,11 +52,6 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=default -Wno-unused-command-line-argument")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 endif ()
-
-# googletest, etc
-set (EXTERNAL_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/external)
-set (EXTERNAL_INSTALL_LOCATION ${CMAKE_BINARY_DIR}/external)
-set (EXTERNAL_INCLUDE_DIR ${EXTERNAL_INSTALL_LOCATION}/include)
 
 #
 # Generators
@@ -221,111 +216,72 @@ set(COMMON_LIBRARIES ${DEHANCER_EXT_MATH_LIB};${CMAKE_THREAD_LIBS_INIT};${MKL_LI
 string(STRIP "${CMAKE_C_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" C_FLAGS)
 string(STRIP "${CMAKE_CXX_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" CXX_FLAGS)
 
+include(FetchContent)
+
 #
-# Google TEST
+# Google Test
 #
 if (BUILD_TESTING)
+
     find_package(GTest)
-    if (NOT GTEST_FOUND)
 
-        ExternalProject_Add(googletest
-                GIT_REPOSITORY https://github.com/google/googletest
-                GIT_PROGRESS YES
-                GIT_SHALLOW YES
-                GIT_TAG release-1.11.0
-                CMAKE_ARGS
-                -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
-                -DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}
-                -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}
-                -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-                -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-                -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
-                -DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
-                -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
-                -DCMAKE_C_FLAGS=${C_FLAGS}
-                -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
-                -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-                -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-                )
-        set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};googletest)
+    if (NOT GTest_FOUND)
 
-        include_directories(
-                ./
-                ../include
-                ${CMAKE_BINARY_DIR}/external/include
+        string(STRIP "${CMAKE_C_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" C_FLAGS)
+        string(STRIP "${CMAKE_CXX_FLAGS} -D_ITERATOR_DEBUG_LEVEL=0" CXX_FLAGS)
+
+        set(CMAKE_OSX_ARCHITECTURES "${CMAKE_OSX_ARCHITECTURES}" CACHE STRING "" FORCE)
+
+        FetchContent_Declare(
+                googletest
+                GIT_REPOSITORY https://github.com/google/googletest.git
+                GIT_TAG      v1.14.0
+                SOURCE_DIR "${CMAKE_BINARY_DIR}/googletest-src"
         )
 
-        link_directories(
-                ${CMAKE_BINARY_DIR}/external/lib
-        )
+        FetchContent_GetProperties(googletest)
 
-    endif()
+        if(NOT googletest_POPULATED)
+            FetchContent_Populate(googletest)
+            add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+        endif()
+
+    endif ()
+
 endif ()
 
-pkg_check_modules(armadillo armadillo)
+FetchContent_Declare(
+        armadillo
+        GIT_REPOSITORY  https://github.com/dehancer/armadillo-code
+        GIT_TAG     9.700.x
+        GIT_PROGRESS YES
+        GIT_SHALLOW YES
+        SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"
+        BINARY_DIR "${CMAKE_BINARY_DIR}/armadillo-build"
+)
 
-if (armadillo_FOUND)
+FetchContent_GetProperties(armadillo)
+if(NOT armadillo_POPULATED)
 
-    message("Armadillo: ${armadillo_INCLUDE_DIRS}, ${armadillo_LIBRARY_DIRS}")
-
-    include_directories(
-            ${armadillo_INCLUDE_DIRS}
-    )
-    link_directories(
-            ${armadillo_LIBRARY_DIRS}
-    )
-    set(COMMON_LIBRARIES ${COMMON_LIBRARIES};${armadillo_LIBRARIES})
-
-else()
-
-    set(ARMA_PATH ${CMAKE_BINARY_DIR}/external)
-
-    ExternalProject_Add(armadillolib
-            GIT_REPOSITORY https://github.com/dehancer/armadillo-code
-            GIT_PROGRESS YES
-            GIT_SHALLOW YES
-            GIT_TAG 9.700.x
-            CMAKE_ARGS
-            -DCMAKE_INSTALL_LIBDIR=${CMAKE_INSTALL_LIBDIR}
-            -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-            -DCMAKE_INSTALL_PREFIX=${ARMA_PATH}
-            -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-            -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-            -DCMAKE_C_FLAGS=${C_FLAGS}
-            -DCMAKE_CXX_FLAGS=${CXX_FLAGS}
-            -DBUILD_TESTING=OFF
-            -DDETECT_HDF5=false
-            -DDEHANCER_TARGET_ARCH=${DEHANCER_TARGET_ARCH}
-            -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-            -DVCPKG_TARGET_TRIPLET=${VCPKG_TARGET_TRIPLET}
-            -DCMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
-            -DCMAKE_OSX_SYSROOT=${CMAKE_OSX_SYSROOT}
-            -DCMAKE_OSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}
-            PREFIX ${CMAKE_BINARY_DIR}/tmp
-            )
-
-    set(COMMON_DEPENDENCIES ${COMMON_DEPENDENCIES};armadillolib)
-    set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
-
-
-    include_directories(
-            ${ARMA_PATH}/include
-    )
-
-    link_directories(
-            ${ARMA_PATH}/lib
-    )
+    FetchContent_Populate(armadillo)
+    add_subdirectory(${armadillo_SOURCE_DIR} ${armadillo_BINARY_DIR})
 
 endif()
 
+include_directories(
+        ${armadillo_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
 
 #
 # Details
 #
-add_subdirectory(lib)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 if(BUILD_TESTING)
-    add_subdirectory(tests)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/tests)
     enable_testing ()
 endif()
 
@@ -342,14 +298,6 @@ set(prefix ${CMAKE_INSTALL_PREFIX})
 set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
-
-if (NOT armadillo_FOUND)
-    configure_file(${CMAKE_SOURCE_DIR}/armadillo.pc.in ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc @ONLY)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/armadillo.pc
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
-        )
-endif ()
 
 configure_file(${CMAKE_SOURCE_DIR}/dehancer-maths-cpp.pc.in ${CMAKE_CURRENT_BINARY_DIR}/dehancer-maths-cpp.pc @ONLY)
 

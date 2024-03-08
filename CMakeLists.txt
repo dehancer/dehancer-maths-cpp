@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.7.0)
+project(${PROJECT_LIB} VERSION 0.8.0)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)

@@ -1,7 +1,5 @@
 include(CMakePackageConfigHelpers)
 
-set(CMAKE_INSTALL_PREFIX /usr/local/${PROJECT_LIB})
-
 include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ../include
@@ -10,15 +8,15 @@ include_directories(
 )
 
 FILE(GLOB PUBLIC_INCLUDE_FILES
-        ${CMAKE_SOURCE_DIR}/include/dehancer/*.hpp
+        ../include/dehancer/*.hpp
         )
 
 FILE(GLOB PUBLIC_SPLINE_INCLUDE_FILES
-        ${CMAKE_SOURCE_DIR}/include/dehancer/spline/*.hpp
+        ../include/dehancer/spline/*.hpp
         )
 
 FILE(GLOB PUBLIC_DETAILS_INCLUDE_FILES
-        ${CMAKE_SOURCE_DIR}/include/dehancer/details/*.hpp
+        ../include/dehancer/details/*.hpp
         )
 
 FILE(GLOB INCLUDE_FILES
@@ -46,8 +44,6 @@ target_include_directories(
         ${PROJECT_LIB}
         PUBLIC
         ../include
-        ${EXTERNAL_INCLUDE_DIR}
-        ${EXTERNAL_LOCATION}/nlohmann
 )
 
 set(config_install_dir "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}")
@@ -75,17 +71,6 @@ endif ()
 
 if (NOT CMAKE_INSTALL_INCLUDEDIR)
     set(CMAKE_INSTALL_INCLUDEDIR include)
-endif ()
-
-if (NOT armadillo_FOUND)
-install(DIRECTORY
-        ${EXTERNAL_INSTALL_LOCATION}/include/armadillo_bits
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        FILES_MATCHING
-        PATTERN *
-        PATTERN gtest* EXCLUDE
-        PATTERN gmock* EXCLUDE
-        )
 endif ()
 
 install(DIRECTORY

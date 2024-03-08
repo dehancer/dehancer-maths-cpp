@@ -18,16 +18,6 @@ option(BUILD_TESTING "Enable creation of Armadillo tests." OFF)
 option(DEHANCER_TARGET_ARCH "")
 option(VCPKG_TARGET_TRIPLET "")
 
-#if (DEHANCER_TARGET_ARCH)
-
-#     x86_64-apple-macos10.13
-#     or
-#     arm64-apple-macos11
-
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -target ${DEHANCER_TARGET_ARCH}")
-#endif ()
-
 option(DEHANCER_COMMON_DIR  "")
 if (NOT DEHANCER_COMMON_DIR)
     set(DEHANCER_COMMON_DIR ${CMAKE_BINARY_DIR}/tmp)

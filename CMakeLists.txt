@@ -76,11 +76,14 @@ if (LINUX)
 
     set(DEHANCER_EXT_MATH_LIB)
 
-    set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
+    set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-redhat-linux/8;/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
+
+    message(STATUS "FORTRAN_LIB_PATHS: ${FORTRAN_LIB_PATHS}")
 
     find_library(GFORTRAN_LIBRARY
             NAMES gfortran
             PATHS ${FORTRAN_LIB_PATHS}
+            REQUIRED
             )
 
     find_library(GQUADMATH_LIBRARY
@@ -111,7 +114,12 @@ if (LINUX)
 #    endforeach()
 
     set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
-    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};gfortran;m)
+
+    if (GFORTRAN_LIBRARY)
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${GFORTRAN_LIBRARY};m)
+    else ()
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
+    endif ()
 
     find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
 

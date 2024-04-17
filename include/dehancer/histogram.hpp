@@ -106,6 +106,12 @@ namespace dehancer::math {
              */
             explicit Histogram(const std::vector<std::vector<float>>& buffer);
 
+            Histogram(const Histogram& h);
+
+            Histogram(Histogram&& h) noexcept ;
+
+            Histogram& operator=(const Histogram& h);
+
             /**
              * Update histogram from raw buffer
              * @param buffer
@@ -139,7 +145,7 @@ namespace dehancer::math {
             [[nodiscard]] Size get_size() const { return size_; }
 
         private:
-            Size                 size_;
+            Size                 size_{0,4};
             std::vector<Channel> channels_;
 
         };

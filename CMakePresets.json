@@ -1,0 +1,371 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+
+  "configurePresets": [
+
+    {
+      "name": "vs17",
+      "hidden": true,
+      "generator": "Visual Studio 17 2022",
+      "toolset": "ClangCL"
+    },
+
+    {
+      "name": "ninja",
+      "hidden": true,
+      "generator": "Ninja"
+    },
+
+    {
+      "name": "unix",
+      "hidden": true,
+      "generator": "Unix Makefiles"
+    },
+
+    {
+      "name": "ios-xcode",
+      "hidden": true,
+      "generator": "Xcode"
+    },
+
+    {
+      "name": "msvc2022",
+      "hidden": true,
+
+      "environment": {
+        "MSVC_BIN_DIR": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/Llvm/x64/bin",
+        "PATH": "$env{MSVC_BIN_DIR};$penv{PATH}"
+      }
+
+    },
+
+    {
+
+      "name": "windows",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build-${presetName}",
+      "toolchainFile": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "warnings": {
+        "unusedCli": false
+      },
+
+      "environment": {
+        "HOME": "$env{USERPROFILE}"
+      },
+
+      "cacheVariables": {
+
+        "CMAKE_INSTALL_PREFIX": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/${hostSystemName}/$env{BUILD_TYPE}/dehancer"
+        },
+
+        "CMAKE_SHARED_LINKER_FLAGS": "/MANIFEST:NO",
+        "CMAKE_EXE_LINKER_FLAGS": "/MANIFEST:NO",
+        "CMAKE_C_COMPILER": "$env{MSVC_BIN_DIR}/clang-cl.exe",
+        "CMAKE_CXX_COMPILER": "$env{MSVC_BIN_DIR}/clang-cl.exe",
+
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_VERSION": "10.0",
+
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+
+        "BUILD_SHARED_LIBS": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+
+        "DEHANCER_CONTROLLED_SINGLETON": {
+          "type": "BOOL",
+          "value": "OFF"
+        },
+
+        "USE_UNICODE" : {
+          "type": "BOOL",
+          "value": "ON"
+        }
+
+      }
+
+    },
+
+    {
+      "name": "macos",
+
+      "hidden": true,
+
+      "binaryDir": "${sourceDir}/build-${presetName}",
+
+      "warnings": {
+        "unusedCli": false
+      },
+
+      "cacheVariables": {
+
+        "CMAKE_INSTALL_PREFIX": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/${hostSystemName}/$env{BUILD_TYPE}/dehancer"
+        },
+
+        "CMAKE_OSX_ARCHITECTURES": {
+          "type": "STRING",
+          "value": "arm64;x86_64"
+        },
+
+        "CMAKE_OSX_DEPLOYMENT_TARGET": {
+          "type": "STRING",
+          "value": "11.0"
+        },
+
+        "CMAKE_OSX_SYSROOT": {
+          "type": "STRING",
+          "value": "macosx"
+        },
+
+        "BUILD_SHARED_LIBS": {
+          "type": "STRING",
+          "value": "OFF"
+        }
+
+      }
+    },
+
+    {
+      "name": "ios",
+
+      "hidden": true,
+
+      "binaryDir": "${sourceDir}/build-${presetName}",
+
+      "warnings": {
+        "unusedCli": false
+      },
+
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/ios-$env{BUILD_TYPE}/dehancer"
+        },
+
+        "PLATFORM": {
+          "type": "STRING",
+          "value": "OS64COMBINED"
+        },
+
+        "DEPLOYMENT_TARGET": {
+          "type": "STRING",
+          "value": "14.0"
+        },
+
+        "CMAKE_TOOLCHAIN_FILE" : {
+          "type" : "STRING",
+          "value" : "$env{HOME}/Develop/Dehancer/Dehancer-Plugins/ios-cmake/ios.toolchain.cmake"
+        },
+
+        "BUILD_SHARED_LIBS": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "EXIV2_BUILD_SAMPLE": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "EXIV2_BUILD_EXIV2_COMMAND": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "EXIV2_ENABLE_XMP": {
+          "type": "STRING",
+          "value": "ON"
+        },
+
+        "EXIV2_ENABLE_DYNAMIC_RUNTIME": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "CURL_ROOT_PATH": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/ios"
+        }
+    }
+    },
+
+    {
+      "name": "linux",
+
+      "hidden": true,
+
+      "binaryDir": "${sourceDir}/build-${presetName}",
+
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Docker-rockylinux-qt5",
+          "toolset": "ClangCL"
+        }
+      },
+
+      "warnings": {
+        "unusedCli": false
+      },
+
+      "cacheVariables": {
+
+        "CMAKE_INSTALL_PREFIX": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/${hostSystemName}/$env{BUILD_TYPE}/dehancer"
+        },
+
+        "BUILD_SHARED_LIBS": {
+          "type": "STRING",
+          "value": "OFF"
+        }
+
+      }
+
+    },
+
+    {
+
+      "name": "debug",
+      "hidden": true,
+
+      "environment": {
+        "BUILD_TYPE": "debug"
+      },
+
+      "cacheVariables": {
+
+        "GTest_ROOT": {
+          "type": "STRING",
+          "value": "$env{HOME}/Develop/local/${hostSystemName}"
+        },
+
+        "DEHANCER_DEBUG": {
+          "type": "STRING",
+          "value": "ON"
+        },
+
+        "PRINT_DEBUG": {
+          "type": "STRING",
+          "value": "ON"
+        },
+
+        "BUILD_TESTING": {
+          "type": "STRING",
+          "value": "ON"
+        },
+
+        "CMAKE_BUILD_TYPE": "Debug"
+
+      }
+    },
+
+    {
+      "name": "windows_debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "inherits": ["debug"]
+    },
+
+    {
+
+      "name": "release",
+      "hidden": true,
+
+      "environment": {
+        "BUILD_TYPE": "release"
+      },
+
+      "cacheVariables": {
+
+        "DEHANCER_DEBUG": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "PRINT_DEBUG": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "BUILD_TESTING": {
+          "type": "STRING",
+          "value": "OFF"
+        },
+
+        "CMAKE_BUILD_TYPE": "Release"
+
+      }
+    },
+
+
+    {
+      "name": "windows_release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      },
+      "inherits": ["release"]
+    },
+
+    {
+      "name": "windows-debug",
+      "displayName": "Dehancer userlib windows debug build, x86_64",
+      "inherits": [ "windows_debug", "msvc2022", "ninja", "windows" ]
+    },
+
+    {
+      "name": "windows-release",
+      "displayName": "Dehancer userlib windows release build, x86_64",
+      "inherits": [ "windows_release", "msvc2022", "ninja", "windows" ]
+    },
+
+    {
+      "name": "macos-debug",
+      "displayName": "Dehancer userlib build, arm64; x86_64",
+      "inherits": [ "macos", "debug" ]
+    },
+
+    {
+      "name": "macos-release",
+      "displayName": "Dehancer userlib build, arm64; x86_64",
+      "inherits": [ "macos", "release" ]
+    },
+
+    {
+      "name": "linux-debug",
+      "displayName": "Dehancer userlib build, x86_64",
+      "inherits": [ "unix", "debug", "linux" ]
+    },
+
+    {
+      "name": "linux-release",
+      "displayName": "Dehancer userlib build, x86_64",
+      "inherits": [ "unix", "release", "linux"]
+    },
+
+    {
+      "name": "ios-debug",
+      "displayName": "Dehancer userlib build, OS64-COMBINED",
+      "inherits": [ "ios", "ios-xcode", "debug" ]
+    },
+
+    {
+      "name": "ios-release",
+      "displayName": "Dehancer userlib build, OS64-COMBINED",
+      "inherits": [ "ios", "ios-xcode" ,"release" ]
+    }
+  ]
+
+}

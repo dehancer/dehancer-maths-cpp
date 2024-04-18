@@ -191,7 +191,7 @@ endif()
 
 if (WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc -Wno-deprecated-declarations")
-    add_definitions(/MT /DWIN32=1 /D_ITERATOR_DEBUG_LEVEL=0)
+    add_definitions(/MT /DWIN32=1 /D_ITERATOR_DEBUG_LEVEL=0 /GR /Ob0)
     string(TOLOWER  ${CMAKE_BUILD_TYPE} BUILD_TYPE)
     if (${BUILD_TYPE} STREQUAL "debug")
         add_definitions(/MTd)
@@ -250,8 +250,10 @@ endif ()
 
 FetchContent_Declare(
         armadillo
-        GIT_REPOSITORY  https://github.com/dehancer/armadillo-code
-        GIT_TAG     9.700.x
+        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
+        GIT_TAG  9.700.x
+        #        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
+        #        GIT_TAG     14.0.x
         GIT_PROGRESS YES
         GIT_SHALLOW YES
         SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"

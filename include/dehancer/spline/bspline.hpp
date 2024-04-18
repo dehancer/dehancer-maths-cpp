@@ -6,17 +6,15 @@
 
 #include "dehancer/spline/matrix_based.hpp"
 
-namespace dehancer {
+namespace dehancer::spline {
 
-    namespace spline {
+    class BSpline: public MatrixBased {
 
-        class BSpline: public MatrixBased {
-
-        public:
-            using MatrixBased::MatrixBased;
-            BSpline(const std::vector<math::float2>& controls, size_t resolution = 256);
-            virtual const math::float4x4& get_matrix() const override ;
-        };
-    }
+    public:
+        using MatrixBased::MatrixBased;
+        explicit BSpline(const std::vector<math::float2>& controls, size_t resolution = 256);
+        [[nodiscard]] const math::float4x4& get_matrix() const override ;
+    };
 }
+
 

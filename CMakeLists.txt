@@ -40,7 +40,6 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=default -Wno-unused-command-line-argument")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 endif ()
 
 #
@@ -92,26 +91,6 @@ if (LINUX)
             )
 
     message("GFORTRAN_LIBRARY: ${GFORTRAN_LIBRARY}")
-
-#    foreach(v ${BLAS_LIBRARIES})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${LAPACK_LIBRARIES})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${GFORTRAN_LIBRARY})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${GQUADMATH_LIBRARY})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
 
     set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
 
@@ -250,10 +229,10 @@ endif ()
 
 FetchContent_Declare(
         armadillo
-        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
-        GIT_TAG  9.700.x
-        #        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
-        #        GIT_TAG     14.0.x
+#        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
+#        GIT_TAG  9.700.x
+        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
+        GIT_TAG     12.8.x
         GIT_PROGRESS YES
         GIT_SHALLOW YES
         SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"

@@ -6,31 +6,29 @@
 
 #include "dehancer/interpolator.hpp"
 
-namespace dehancer {
+namespace dehancer::spline {
 
-    namespace spline {
+    class Cubic: public math::protocol::Interpolator {
 
-        class Cubic: public math::protocol::Interpolator {
+    public:
+        using math::protocol::Interpolator::Interpolator;
 
-        public:
-            using math::protocol::Interpolator::Interpolator;
+        explicit Cubic(size_t resolution = 256, float second_derivative=1);
+        explicit Cubic(const std::vector<math::float2>& controls, size_t resolution = 256, float second_derivative=1);
 
-            explicit Cubic(size_t resolution = 256, float second_derivative=1);
-            explicit Cubic(const std::vector<math::float2>& controls, size_t resolution = 256, float second_derivative=1);
+        void  set_second_derivative(float second_derivative);
+        [[nodiscard]] float get_second_derivative() const { return second_derivative_;}
 
-            void  set_second_derivative(float second_derivative);
-            float get_second_derivative() const { return second_derivative_;}
+        [[nodiscard]] size_t minimum_controls() const override ;
 
-            size_t minimum_controls() const override ;
+        [[nodiscard]] float value(float x) const override ;
 
-            float value(float x) const override ;
+        ~Cubic() override = default;
 
-            ~Cubic() override = default;
-            
-        private:
-            std::vector<float> coeffs_;
-            float second_derivative_;
-            void update_coeffs();
-        };
-    }
+    private:
+        std::vector<float> coeffs_;
+        float second_derivative_;
+        void update_coeffs();
+    };
 }
+

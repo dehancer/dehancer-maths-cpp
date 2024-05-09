@@ -83,12 +83,12 @@ struct ReadOnlyProperty
     template<typename OuterIn, typename TIn, TIn (OuterIn::*getter2)()>
     ReadOnlyProperty& operator=(const ReadOnlyProperty<OuterIn, TIn, getter2>& other)
     {
-        return *this = (other.instance->*getter2)();
+        *this = (other.instance->*getter2)(); return *this;
     }
 
     ReadOnlyProperty& operator=(const ReadOnlyProperty& other)
     {
-        return *this = (other.instance->*getter)();
+        *this = (other.instance->*getter)(); return *this;
     }
 };
 

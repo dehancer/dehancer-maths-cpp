@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.8.0)
+project(${PROJECT_LIB} VERSION 0.9.0)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -40,7 +40,6 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lstdc++ -fvisibility=default -Wno-unused-command-line-argument")
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -ffast-math")
 endif ()
 
 #
@@ -76,11 +75,14 @@ if (LINUX)
 
     set(DEHANCER_EXT_MATH_LIB)
 
-    set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
+    set(FORTRAN_LIB_PATHS ${CMAKE_SYSTEM_LIBRARY_PATH};/usr/lib/gcc/x86_64-redhat-linux/8;/usr/lib/gcc/x86_64-linux-gnu/9;/usr/lib/gcc/x86_64-linux-gnu/8;/usr/lib/gcc/x86_64-linux-gnu;/lib64;/lib;/usr/lib64;/usr/lib;/usr/local/lib64;/usr/local/lib;/opt/local/lib64;/opt/local/lib)
+
+    message(STATUS "FORTRAN_LIB_PATHS: ${FORTRAN_LIB_PATHS}")
 
     find_library(GFORTRAN_LIBRARY
             NAMES gfortran
             PATHS ${FORTRAN_LIB_PATHS}
+            REQUIRED
             )
 
     find_library(GQUADMATH_LIBRARY
@@ -90,28 +92,13 @@ if (LINUX)
 
     message("GFORTRAN_LIBRARY: ${GFORTRAN_LIBRARY}")
 
-#    foreach(v ${BLAS_LIBRARIES})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${LAPACK_LIBRARIES})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${GFORTRAN_LIBRARY})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-#
-#    foreach(v ${GQUADMATH_LIBRARY})
-#        string(REPLACE ".so" ".a" vv ${v})
-#        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${vv})
-#    endforeach()
-
     set(DEHANCER_EXT_MATH_LIB ${BLAS_LIBRARIES};${LAPACK_LIBRARIES})
-    set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};gfortran;m)
+
+    if (GFORTRAN_LIBRARY)
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};${GFORTRAN_LIBRARY};m)
+    else ()
+        set(DEHANCER_EXT_MATH_LIB ${DEHANCER_EXT_MATH_LIB};m)
+    endif ()
 
     find_library(DEHANCER_EXT_MATH_LIB REQUIRED ${DEHANCER_EXT_MATH})
 
@@ -183,7 +170,7 @@ endif()
 
 if (WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -EHsc -Wno-deprecated-declarations")
-    add_definitions(/MT /DWIN32=1 /D_ITERATOR_DEBUG_LEVEL=0)
+    add_definitions(/MT /DWIN32=1 /D_ITERATOR_DEBUG_LEVEL=0 /GR /Ob0)
     string(TOLOWER  ${CMAKE_BUILD_TYPE} BUILD_TYPE)
     if (${BUILD_TYPE} STREQUAL "debug")
         add_definitions(/MTd)
@@ -242,8 +229,10 @@ endif ()
 
 FetchContent_Declare(
         armadillo
-        GIT_REPOSITORY  https://github.com/dehancer/armadillo-code
-        GIT_TAG     9.700.x
+#        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
+#        GIT_TAG  9.700.x
+        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
+        GIT_TAG     12.8.x
         GIT_PROGRESS YES
         GIT_SHALLOW YES
         SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"

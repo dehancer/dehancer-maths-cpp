@@ -227,6 +227,11 @@ if (BUILD_TESTING)
 
 endif ()
 
+if (LINUX)
+    set (BUILD_SMOKE_TEST OFF CACHE INTERNAL "BUILD_SMOKE_TEST OFF")
+    set (BUILD_SHARED_LIBS OFF CACHE INTERNAL "BUILD_SHARED_LIBS OFF")
+endif ()
+
 FetchContent_Declare(
         armadillo
 #        GIT_REPOSITORY https://github.com/dehancer/armadillo-code

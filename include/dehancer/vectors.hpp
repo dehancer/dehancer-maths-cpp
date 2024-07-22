@@ -62,13 +62,13 @@ namespace dehancer::math {
         float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){};
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_x(); } // Getter.
+                [this] (float v) { this->set_x(v); },   // Setter
+                [this] () -> float& {  return this->get_x(); } // Getter
         };
 
         property<float> y {
-                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_y(); } // Getter.
+                [this] (float v) { this->set_y(v); },   // Setter
+                [this] () -> float& {  return this->get_y(); } // Getter
         };
 
     };
@@ -93,18 +93,18 @@ namespace dehancer::math {
         float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_x(); } // Getter.
+                [this] (float v) { this->set_x(v); },   // Setter
+                [this] () -> float& {  return this->get_x(); } // Getter
         };
 
         property<float> y {
-                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_y(); } // Getter.
+                [this] (float v) { this->set_y(v); },   // Setter
+                [this] () -> float& {  return this->get_y(); } // Getter
         };
 
         property<float> z {
-                [this] (float v) { this->set_z(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_z(); } // Getter.
+                [this] (float v) { this->set_z(v); },   // Setter
+                [this] () -> float& {  return this->get_z(); } // Getter
         };
 
     };
@@ -132,23 +132,23 @@ namespace dehancer::math {
         float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_x(); } // Getter.
+                [this] (float v) { this->set_x(v); },   // Setter
+                [this] () -> float& {  return this->get_x(); } // Getter
         };
 
         property<float> y {
-                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_y(); } // Getter.
+                [this] (float v) { this->set_y(v); },   // Setter
+                [this] () -> float& {  return this->get_y(); } // Getter
         };
 
         property<float> z {
-                [this] (float v) { this->set_z(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_z(); } // Getter.
+                [this] (float v) { this->set_z(v); },   // Setter
+                [this] () -> float& {  return this->get_z(); } // Getter
         };
 
         property<float> w {
-                [this] (float v) { this->set_w(v); },   // Setter ... yes you can do this!
-                [this] () -> float& {  return this->get_w(); } // Getter.
+                [this] (float v) { this->set_w(v); },   // Setter
+                [this] () -> float& {  return this->get_w(); } // Getter
         };
     };
 }

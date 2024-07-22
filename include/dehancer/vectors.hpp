@@ -5,6 +5,7 @@
 #pragma once
 
 #include <armadillo>
+#include <cmath>
 #include "dehancer/properties.hpp"
 #include "dehancer/details/observable_array.hpp"
 
@@ -241,13 +242,8 @@ namespace dehancer::math {
 
     /**
      * Kernel compatible function of fabs
-     * @param a
      * @return
      */
-
-    static inline float fabs(float v) {
-        return abs(v);
-    }
 
     static inline float2 fabs(const float2& v) {
         return make_float2(abs(v.x), abs(v.y));
@@ -258,7 +254,7 @@ namespace dehancer::math {
     }
 
     static inline float4 fabs(const float4& v) {
-        return make_float4(abs(v.x), fabs(v.y), fabs(v.z), fabs(v.w));
+        return make_float4(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
     }
 
     /**

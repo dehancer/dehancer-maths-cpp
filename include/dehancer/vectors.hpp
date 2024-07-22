@@ -24,6 +24,26 @@ namespace dehancer::math {
         }
     };
 
+    template <typename T> class Property {
+        T value;
+    public:
+        T & operator = (const T &i) {
+            value = i; return value;
+        }
+        // This template class member function template serves the purpose to make
+        // typing more strict. Assignment to this is only possible with exact identical types.
+        // The reason why it will cause an error is temporary variable created while implicit type conversion in reference initialization.
+        template <typename T2> T2 & operator = (const T2 &i) {
+            T2 &guard = value;
+            throw guard; // Never reached.
+        }
+
+        // Implicit conversion back to T.
+        operator T const & () const {
+            return value;
+        }
+    };
+
     /**
      * 2-dimensions column float vector
      */
@@ -33,13 +53,24 @@ namespace dehancer::math {
 
         using float_vector::float_vector;
 
-        float& x() { return (*this)[0]; };
-        [[nodiscard]] const float& x() const { return (*this)[0]; };
+        [[nodiscard]] float& get_x() { return (*this)[0]; };
+        void set_x(float xx) { get_x() = xx; };
 
-        float& y() { return (*this)[1]; };
-        [[nodiscard]] const float& y() const { return (*this)[1]; };
+        [[nodiscard]] float& get_y() { return (*this)[1]; };
+        void set_y(float yy) { get_y() = yy; };
 
-        float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){}
+        float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){};
+
+        property<float> x {
+                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_x(); } // Getter.
+        };
+
+        property<float> y {
+                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_y(); } // Getter.
+        };
+
     };
 
     /**
@@ -50,16 +81,31 @@ namespace dehancer::math {
     public:
         using float_vector::float_vector;
 
-        float& x() { return (*this)[0]; };
-        [[nodiscard]] const float& x() const { return (*this)[0]; };
+        float& get_x() { return (*this)[0]; };
+        void set_x(float xx) { get_x() = xx; };
 
-        float& y() { return (*this)[1]; };
-        [[nodiscard]] const float& y() const { return (*this)[1]; };
+        float& get_y() { return (*this)[1]; };
+        void set_y(float xx) { get_y() = xx; };
 
-        float& z() { return (*this)[2]; };
-        [[nodiscard]] const float& z() const { return (*this)[2]; };
+        float& get_z() { return (*this)[2]; };
+        void set_z(float xx) { get_z() = xx; };
 
         float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
+
+        property<float> x {
+                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_x(); } // Getter.
+        };
+
+        property<float> y {
+                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_y(); } // Getter.
+        };
+
+        property<float> z {
+                [this] (float v) { this->set_z(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_z(); } // Getter.
+        };
 
     };
 
@@ -71,18 +117,38 @@ namespace dehancer::math {
     public:
         using float_vector::float_vector;
 
-        float& x() { return (*this)[0]; };
-        [[nodiscard]] const float& x() const { return (*this)[0]; };
+        float& get_x() { return (*this)[0]; };
+        void set_x(float xx) { get_x() = xx; };
 
-        float& y() { return (*this)[1]; };
-        [[nodiscard]] const float& y() const { return (*this)[1]; };
+        float& get_y() { return (*this)[1]; };
+        void set_y(float xx) { get_y() = xx; };
 
-        float& z() { return (*this)[2]; };
-        [[nodiscard]] const float& z() const { return (*this)[2]; };
+        float& get_z() { return (*this)[2]; };
+        void set_z(float xx) { get_z() = xx; };
 
-        float& w() { return (*this)[3]; };
-        [[nodiscard]] const float& w() const { return (*this)[3]; };
+        float& get_w() { return (*this)[3]; };
+        void set_w(float xx) { get_w() = xx; };
 
         float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
+
+        property<float> x {
+                [this] (float v) { this->set_x(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_x(); } // Getter.
+        };
+
+        property<float> y {
+                [this] (float v) { this->set_y(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_y(); } // Getter.
+        };
+
+        property<float> z {
+                [this] (float v) { this->set_z(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_z(); } // Getter.
+        };
+
+        property<float> w {
+                [this] (float v) { this->set_w(v); },   // Setter ... yes you can do this!
+                [this] () -> float& {  return this->get_w(); } // Getter.
+        };
     };
 }

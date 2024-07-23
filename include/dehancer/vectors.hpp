@@ -152,15 +152,15 @@ namespace dehancer::math {
     };
 
 
-    inline static float2 __attribute__((overloadable)) make_float2(float x, float y) {
+    inline static float2 make_float2(float x, float y) {
         return {x, y};
     }
 
-    inline static  float3 __attribute__((overloadable)) make_float3(float x, float y, float z) {
+    inline static float3 make_float3(float x, float y, float z) {
         return {x, y, z};
     }
 
-    inline static  float4 __attribute__((overloadable)) make_float4(float x, float y, float z, float w) {
+    inline static float4 make_float4(float x, float y, float z, float w) {
         return {x, y, z, w};
     }
 
@@ -169,23 +169,23 @@ namespace dehancer::math {
      * @param C
      * @return
      */
-    static inline float2 __attribute__((overloadable)) to_float2(float C) { return make_float2(C,C); }
-    static inline float3 __attribute__((overloadable)) to_float3(float C) { return make_float3(C,C,C); }
-    static inline float4 __attribute__((overloadable)) to_float4(float C) { return make_float4(C,C,C,C); }
+    static inline float2 to_float2(float C) { return make_float2(C,C); }
+    static inline float3 to_float3(float C) { return make_float3(C,C,C); }
+    static inline float4 to_float4(float C) { return make_float4(C,C,C,C); }
 
-    static inline float2 __attribute__((overloadable)) to_float2(int C) { return make_float2(C,C); }
-    static inline float3 __attribute__((overloadable)) to_float3(int C) { return make_float3(C,C,C); }
-    static inline float4 __attribute__((overloadable)) to_float4(int C) { return make_float4(C,C,C,C); }
+    static inline float2 to_float2(int C) { return make_float2(C,C); }
+    static inline float3 to_float3(int C) { return make_float3(C,C,C); }
+    static inline float4 to_float4(int C) { return make_float4(C,C,C,C); }
 
-    static inline float2 __attribute__((overloadable)) to_float2(uint C) { return make_float2(C,C); }
-    static inline float3 __attribute__((overloadable)) to_float3(uint C) { return make_float3(C,C,C); }
-    static inline float4 __attribute__((overloadable)) to_float4(uint C) { return make_float4(C,C,C,C); }
+    static inline float2 to_float2(uint C) { return make_float2(C,C); }
+    static inline float3 to_float3(uint C) { return make_float3(C,C,C); }
+    static inline float4 to_float4(uint C) { return make_float4(C,C,C,C); }
 
-    static inline float4 __attribute__((overloadable)) to_float4(const float3& a, float w) {
+    static inline float4 to_float4(const float3& a, float w) {
         return make_float4(a.x, a.y, a.z, w);
     }
 
-    static inline float3 __attribute__((overloadable)) to_float3(const float4& a) {
+    static inline float3 to_float3(const float4& a) {
         return make_float3(a.x, a.y, a.z);
     }
 

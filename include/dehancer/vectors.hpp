@@ -34,22 +34,26 @@ namespace dehancer::math {
 
         using float_vector::float_vector;
 
-        [[nodiscard]] float& get_x() { return (*this)[0]; };
-        void set_x(float xx) { get_x() = xx; };
+        [[nodiscard]] float get_x() { return (*this)[0]; };
+        [[nodiscard]] float& assign_x() { return (*this)[0]; };
+        void set_x(float xx) { (*this)[0] = xx; };
 
-        [[nodiscard]] float& get_y() { return (*this)[1]; };
-        void set_y(float yy) { get_y() = yy; };
+        [[nodiscard]] float get_y() { return (*this)[1]; };
+        [[nodiscard]] float& assign_y() { return (*this)[1]; };
+        void set_y(float yy) { (*this)[1] = yy; };
 
         float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){};
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter
-                [this] () -> float& {  return this->get_x(); } // Getter
+                [this] (float v) { this->set_x(v); },     // Setter
+                [this] () -> float {  return this->get_x(); },    // Getter
+                [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
         property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
-                [this] () -> float& {  return this->get_y(); } // Getter
+                [this] () -> float {  return this->get_y(); }, // Getter
+                [this] () -> float& {  return this->assign_y(); } // Assigner
         };
 
     };
@@ -62,30 +66,36 @@ namespace dehancer::math {
     public:
         using float_vector::float_vector;
 
-        float& get_x() { return (*this)[0]; };
-        void set_x(float xx) { get_x() = xx; };
+        float get_x() { return (*this)[0]; };
+        void set_x(float xx) { (*this)[0] = xx; };
+        [[nodiscard]] float& assign_x() { return (*this)[0]; };
 
-        float& get_y() { return (*this)[1]; };
-        void set_y(float xx) { get_y() = xx; };
+        float get_y() { return (*this)[1]; };
+        void set_y(float xx) { (*this)[1] = xx; };
+        [[nodiscard]] float& assign_y() { return (*this)[1]; };
 
-        float& get_z() { return (*this)[2]; };
-        void set_z(float xx) { get_z() = xx; };
+        float get_z() { return (*this)[2]; };
+        void set_z(float xx) { (*this)[2] = xx; };
+        [[nodiscard]] float& assign_z() { return (*this)[2]; };
 
         float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter
-                [this] () -> float& {  return this->get_x(); } // Getter
+                [this] (float v) { this->set_x(v); },     // Setter
+                [this] () -> float {  return this->get_x(); },    // Getter
+                [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
         property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
-                [this] () -> float& {  return this->get_y(); } // Getter
+                [this] () -> float {  return this->get_y(); }, // Getter
+                [this] () -> float& {  return this->assign_y(); } // Assigner
         };
 
         property<float> z {
                 [this] (float v) { this->set_z(v); },   // Setter
-                [this] () -> float& {  return this->get_z(); } // Getter
+                [this] () -> float {  return this->get_z(); }, // Getter
+                [this] () -> float& {  return this->assign_z(); } // Assigner
         };
 
     };
@@ -98,38 +108,46 @@ namespace dehancer::math {
     public:
         using float_vector::float_vector;
 
-        float& get_x() { return (*this)[0]; };
-        void set_x(float xx) { get_x() = xx; };
+        float get_x() { return (*this)[0]; };
+        void set_x(float xx) { (*this)[0] = xx; };
+        [[nodiscard]] float& assign_x() { return (*this)[0]; };
 
-        float& get_y() { return (*this)[1]; };
-        void set_y(float xx) { get_y() = xx; };
+        float get_y() { return (*this)[1]; };
+        void set_y(float xx) { (*this)[1] = xx; };
+        [[nodiscard]] float& assign_y() { return (*this)[1]; };
 
-        float& get_z() { return (*this)[2]; };
-        void set_z(float xx) { get_z() = xx; };
+        float get_z() { return (*this)[2]; };
+        void set_z(float xx) { (*this)[2] = xx; };
+        [[nodiscard]] float& assign_z() { return (*this)[2]; };
 
-        float& get_w() { return (*this)[3]; };
-        void set_w(float xx) { get_w() = xx; };
+        float get_w() { return (*this)[3]; };
+        void set_w(float xx) { (*this)[3] = xx; };
+        [[nodiscard]] float& assign_w() { return (*this)[3]; };
 
         float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
 
         property<float> x {
-                [this] (float v) { this->set_x(v); },   // Setter
-                [this] () -> float& {  return this->get_x(); } // Getter
+                [this] (float v) { this->set_x(v); },     // Setter
+                [this] () -> float {  return this->get_x(); },    // Getter
+                [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
         property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
-                [this] () -> float& {  return this->get_y(); } // Getter
+                [this] () -> float {  return this->get_y(); }, // Getter
+                [this] () -> float& {  return this->assign_y(); } // Assigner
         };
 
         property<float> z {
                 [this] (float v) { this->set_z(v); },   // Setter
-                [this] () -> float& {  return this->get_z(); } // Getter
+                [this] () -> float {  return this->get_z(); }, // Getter
+                [this] () -> float& {  return this->assign_z(); } // Assigner
         };
 
         property<float> w {
                 [this] (float v) { this->set_w(v); },   // Setter
-                [this] () -> float& {  return this->get_w(); } // Getter
+                [this] () -> float {  return this->get_w(); }, // Getter
+                [this] () -> float& {  return this->assign_w(); } // Assigner
         };
     };
 

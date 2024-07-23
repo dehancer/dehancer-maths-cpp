@@ -75,18 +75,21 @@ namespace dehancer::math {
 
         [[maybe_unused]] property(
                 std::function<void(T)> setter,
-                std::function<T&()> getter
+                std::function<T()> getter,
+                std::function<T&()> assigner
                 ) :
                 setter_(setter),
-                getter_(getter) {};
+                getter_(getter),
+                assigner_(assigner)
+                {};
 
         explicit property(const T& value) { setter_(value); };
 
         operator T() const {return getter_();}
 
-        const T& operator()() const { return getter_(); }
+        const T& operator()() const { return assigner_(); }
 
-        T& operator()() { return getter_(); }
+        T& operator()() { return assigner_(); }
 
         property<T> &operator=(const T &value) {
             setter_(value);
@@ -95,7 +98,8 @@ namespace dehancer::math {
 
     private:
         std::function<void(T)> setter_;
-        std::function<T&()> getter_;
+        std::function<T()> getter_;
+        std::function<T&()> assigner_;
     };
 
 }

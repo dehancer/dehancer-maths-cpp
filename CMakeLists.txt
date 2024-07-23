@@ -235,7 +235,7 @@ FetchContent_Declare(
         armadillo
 #        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
 #        GIT_TAG  9.700.x
-        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
+        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code
         GIT_TAG     12.8.x
         GIT_PROGRESS YES
         GIT_SHALLOW YES

@@ -6,6 +6,7 @@
 
 #include <armadillo>
 #include <cmath>
+#include <type_traits>
 #include "dehancer/properties.hpp"
 #include "dehancer/details/observable_array.hpp"
 
@@ -177,9 +178,9 @@ namespace dehancer::math {
     static inline float3 to_float3(int C) { return make_float3(C,C,C); }
     static inline float4 to_float4(int C) { return make_float4(C,C,C,C); }
 
-    static inline float2 to_float2(uint C) { return make_float2(C,C); }
-    static inline float3 to_float3(uint C) { return make_float3(C,C,C); }
-    static inline float4 to_float4(uint C) { return make_float4(C,C,C,C); }
+    static inline float2 to_float2(unsigned int C) { return make_float2(C,C); }
+    static inline float3 to_float3(unsigned int  C) { return make_float3(C,C,C); }
+    static inline float4 to_float4(unsigned int  C) { return make_float4(C,C,C,C); }
 
     static inline float4 to_float4(const float3& a, float w) {
         return make_float4(a.x, a.y, a.z, w);

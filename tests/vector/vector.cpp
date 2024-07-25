@@ -69,4 +69,6 @@ TEST(Initial, VectorFloat4Test) {
     std::cout << v.y() << std::endl;
     std::cout << v.y - v.x - v.z - v.w << std::endl;
 
+    std::cout <<"dot " << arma::dot(arma::eps(v - v), dehancer::math::float4(arma::fill::ones) ) << std::endl;
+
 }

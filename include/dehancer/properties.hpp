@@ -69,12 +69,90 @@ __PROPS_TYPE__ get_ ##__PROPS__() const __GETTER__;\
 ReadOnlyProperty<__OUTER_CLASS__, __PROPS_TYPE__, &__OUTER_CLASS__::get_ ##__PROPS__> __PROPS__ = this
 
 namespace dehancer::math {
+
+    template<typename T>
+    class value_property {
+    public:
+
+        [[maybe_unused]] value_property()= default;
+
+        explicit value_property(const T& value) { value_=value; };
+
+        operator T() const {return (T)(value_);}
+
+        const T& operator()() const { return value_(); }
+
+        value_property<T> &operator=(const T &value) {
+            value_ = value;
+            return *this;
+        }
+
+    private:
+        T value_{};
+    };
+
     template<typename T>
     class property {
     public:
 
         [[maybe_unused]] property(
+                std::function<void   (const T&)> setter,
+                std::function<const T&()> getter
+        ) :
+                setter_(setter),
+                getter_(getter)
+        {};
+
+        explicit property(const T& value) { setter_(value); };
+
+        operator T() const {return getter_();}
+
+        const T& operator()() const { return getter_(); }
+
+        property<T> &operator=(const T &value) {
+            setter_(value);
+            return *this;
+        }
+
+    private:
+        std::function<void   (const T&)> setter_;
+        std::function<const T&()> getter_;
+    };
+
+    template<typename T>
+    class copied_property {
+    public:
+
+        [[maybe_unused]] copied_property(
                 std::function<void(T)> setter,
+                std::function<T()> getter
+        ) :
+                setter_(setter),
+                getter_(getter)
+        {};
+
+        explicit copied_property(const T& value) { setter_(value); };
+
+        explicit operator const T&() const {return getter_();}
+
+        const T operator()() const { return getter_(); }
+
+        copied_property<T> &operator=(const T &value) {
+            setter_(value);
+            return *this;
+        }
+
+    private:
+        std::function<void(T)> setter_;
+        std::function<T()> getter_;
+    };
+
+    template<typename T>
+    class assigned_property {
+    public:
+
+        [[maybe_unused]] assigned_property(
+                std::function<void(const T&)> setter,
                 std::function<T()> getter,
                 std::function<T&()> assigner
                 ) :
@@ -83,7 +161,7 @@ namespace dehancer::math {
                 assigner_(assigner)
                 {};
 
-        explicit property(const T& value) { setter_(value); };
+        explicit assigned_property(const T& value) { setter_(value); };
 
         operator T() const {return getter_();}
 
@@ -91,7 +169,7 @@ namespace dehancer::math {
 
         T& operator()() { return assigner_(); }
 
-        property<T> &operator=(const T &value) {
+        assigned_property<T> &operator=(const T &value) {
             setter_(value);
             return *this;
         }

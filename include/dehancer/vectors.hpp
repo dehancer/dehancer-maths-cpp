@@ -45,18 +45,17 @@ namespace dehancer::math {
 
         float2(const observable::Aproxy<float2> &a):float_vector(a.get_data()){};
 
-        property<float> x {
+        assigned_property<float> x {
                 [this] (float v) { this->set_x(v); },     // Setter
                 [this] () -> float {  return this->get_x(); },    // Getter
                 [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
-        property<float> y {
+        assigned_property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
                 [this] () -> float {  return this->get_y(); }, // Getter
                 [this] () -> float& {  return this->assign_y(); } // Assigner
         };
-
     };
 
     /**
@@ -81,19 +80,19 @@ namespace dehancer::math {
 
         float3(const observable::Aproxy<float3> &a):float_vector(a.get_data()){}
 
-        property<float> x {
+        assigned_property<float> x {
                 [this] (float v) { this->set_x(v); },     // Setter
                 [this] () -> float {  return this->get_x(); },    // Getter
                 [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
-        property<float> y {
+        assigned_property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
                 [this] () -> float {  return this->get_y(); }, // Getter
                 [this] () -> float& {  return this->assign_y(); } // Assigner
         };
 
-        property<float> z {
+        assigned_property<float> z {
                 [this] (float v) { this->set_z(v); },   // Setter
                 [this] () -> float {  return this->get_z(); }, // Getter
                 [this] () -> float& {  return this->assign_z(); } // Assigner
@@ -127,25 +126,25 @@ namespace dehancer::math {
 
         float4(const observable::Aproxy<float4> &a):float_vector(a.get_data()){}
 
-        property<float> x {
+        assigned_property<float> x {
                 [this] (float v) { this->set_x(v); },     // Setter
                 [this] () -> float {  return this->get_x(); },    // Getter
                 [this] () -> float& {  return this->assign_x(); } // Assigner
         };
 
-        property<float> y {
+        assigned_property<float> y {
                 [this] (float v) { this->set_y(v); },   // Setter
                 [this] () -> float {  return this->get_y(); }, // Getter
                 [this] () -> float& {  return this->assign_y(); } // Assigner
         };
 
-        property<float> z {
+        assigned_property<float> z {
                 [this] (float v) { this->set_z(v); },   // Setter
                 [this] () -> float {  return this->get_z(); }, // Getter
                 [this] () -> float& {  return this->assign_z(); } // Assigner
         };
 
-        property<float> w {
+        assigned_property<float> w {
                 [this] (float v) { this->set_w(v); },   // Setter
                 [this] () -> float {  return this->get_w(); }, // Getter
                 [this] () -> float& {  return this->assign_w(); } // Assigner

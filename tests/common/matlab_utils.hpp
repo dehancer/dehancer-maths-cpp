@@ -14,15 +14,15 @@ namespace matlab {
 
             std::cout << "% matlab script there: " << std::endl;
             std::cout << "x = [";
-            for (int i = 0; i <= spline.resolution; ++i) {
-                auto x = i*spline.step;
+            for (size_t i = 0; i <= spline.resolution; ++i) {
+                auto x = (float)i*spline.step;
                 std::cout << " " << x;
             }
             std::cout << "];" << std::endl;
 
             std::cout << "y = [";
-            for (int i = 0; i <= spline.resolution; ++i) {
-                auto x = i*spline.step;
+            for (size_t i = 0; i <= spline.resolution; ++i) {
+                auto x = (float)i*spline.step;
                 std::cout << " " << spline.value(x);
             }
             std::cout << "];" << std::endl;
@@ -61,7 +61,7 @@ namespace matlab {
             std::cout << "x = [";
 
             auto step = float(1.0/float(spline.size()-1));
-            for (int i = 0; i < spline.size(); ++i) {
+            for (size_t i = 0; i < spline.size(); ++i) {
                 std::cout << " " << i*step;
             }
             std::cout << "];" << std::endl;

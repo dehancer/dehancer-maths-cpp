@@ -264,15 +264,15 @@ namespace dehancer::math {
      */
 
     static inline float2 fabs(const float2& v) {
-        return make_float2(abs(v.x), abs(v.y));
+        return make_float2(std::abs(v.x), std::abs(v.y));
     }
 
     static inline float3 fabs(const float3& v) {
-        return make_float3(abs(v.x), abs(v.y), abs(v.z));
+        return make_float3(std::abs(v.x), std::abs(v.y), std::abs(v.z));
     }
 
     static inline float4 fabs(const float4& v) {
-        return make_float4(abs(v.x), abs(v.y), abs(v.z), abs(v.w));
+        return make_float4(std::abs(v.x), std::abs(v.y), std::abs(v.z), std::abs(v.w));
     }
 
     /**

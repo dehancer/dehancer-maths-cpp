@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.9.0)
+project(${PROJECT_LIB} VERSION 0.10.0)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -34,7 +34,6 @@ endif ()
 #
 set(VERSION_FILE "version.txt")
 set(CMAKE_CXX_STANDARD 17)
-
 
 if (NOT WIN32)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
@@ -236,7 +235,7 @@ FetchContent_Declare(
         armadillo
 #        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
 #        GIT_TAG  9.700.x
-        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code.git
+        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code
         GIT_TAG     12.8.x
         GIT_PROGRESS YES
         GIT_SHALLOW YES
@@ -282,6 +281,8 @@ set(prefix ${CMAKE_INSTALL_PREFIX})
 set(exec_prefix "\${prefix}")
 set(libdir "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
 set(includedir "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+set(extra_math_libs "${DEHANCER_EXT_MATH_LIB}")
+
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/dehancer-maths-cpp.pc.in ${CMAKE_CURRENT_BINARY_DIR}/dehancer-maths-cpp.pc @ONLY)
 

@@ -242,14 +242,14 @@ FetchContent_Declare(
         SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"
         BINARY_DIR "${CMAKE_BINARY_DIR}/armadillo-build"
 )
-
-FetchContent_GetProperties(armadillo)
-if(NOT armadillo_POPULATED)
-
-    FetchContent_Populate(armadillo)
-    add_subdirectory(${armadillo_SOURCE_DIR} ${armadillo_BINARY_DIR})
-
-endif()
+FetchContent_MakeAvailable(armadillo)
+#FetchContent_GetProperties(armadillo)
+#if(NOT armadillo_POPULATED)
+#
+#    FetchContent_Populate(armadillo)
+#    add_subdirectory(${armadillo_SOURCE_DIR} ${armadillo_BINARY_DIR})
+#
+#endif()
 
 include_directories(
         ${armadillo_SOURCE_DIR}/include

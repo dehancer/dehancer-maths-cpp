@@ -226,10 +226,10 @@ if (BUILD_TESTING)
 
 endif ()
 
-if (LINUX)
+#if (LINUX)
     set (BUILD_SMOKE_TEST OFF CACHE INTERNAL "BUILD_SMOKE_TEST OFF")
     set (BUILD_SHARED_LIBS OFF CACHE INTERNAL "BUILD_SHARED_LIBS OFF")
-endif ()
+#endif ()
 
 FetchContent_Declare(
         armadillo
@@ -243,13 +243,6 @@ FetchContent_Declare(
         BINARY_DIR "${CMAKE_BINARY_DIR}/armadillo-build"
 )
 FetchContent_MakeAvailable(armadillo)
-#FetchContent_GetProperties(armadillo)
-#if(NOT armadillo_POPULATED)
-#
-#    FetchContent_Populate(armadillo)
-#    add_subdirectory(${armadillo_SOURCE_DIR} ${armadillo_BINARY_DIR})
-#
-#endif()
 
 include_directories(
         ${armadillo_SOURCE_DIR}/include

@@ -231,25 +231,14 @@ endif ()
     set (BUILD_SHARED_LIBS OFF CACHE INTERNAL "BUILD_SHARED_LIBS OFF")
 #endif ()
 
-FetchContent_Declare(
-        armadillo
-#        GIT_REPOSITORY https://github.com/dehancer/armadillo-code
-#        GIT_TAG  9.700.x
-        GIT_REPOSITORY https://gitlab.com/conradsnicta/armadillo-code
-        GIT_TAG     12.8.x
-        GIT_PROGRESS YES
-        GIT_SHALLOW YES
-        SOURCE_DIR "${CMAKE_BINARY_DIR}/armadillo-src"
-        BINARY_DIR "${CMAKE_BINARY_DIR}/armadillo-build"
-)
-FetchContent_MakeAvailable(armadillo)
+find_package(Armadillo REQUIRED)
 
 include_directories(
-        ${armadillo_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_BINARY_DIR}
+    ${ARMADILLO_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-set(COMMON_LIBRARIES armadillo;${COMMON_LIBRARIES})
+set(COMMON_LIBRARIES ${ARMADILLO_LIBRARIES};${COMMON_LIBRARIES})
 
 #
 # Details

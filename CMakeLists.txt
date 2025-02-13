@@ -244,6 +244,16 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(armadillo)
 
+FetchContent_GetProperties(armadillo)
+
+# On iOS Armadillo has to be built with ARMA_USE_WRAPPER defined.
+if(armadillo_POPULATED AND CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    file(READ "${armadillo_SOURCE_DIR}/include/armadillo_bits/config.hpp" CONTENT)
+    string(REGEX REPLACE "//[ ]+#define[ ]+ARMA_USE_WRAPPER" "#define ARMA_USE_WRAPPER" CONTENT_MODIFIED "${CONTENT}")
+    file(WRITE "${armadillo_SOURCE_DIR}/include/armadillo_bits/config.hpp" "${CONTENT_MODIFIED}")
+    message(STATUS "Armadillo DODODO: ${armadillo_SOURCE_DIR}")
+endif()
+
 include_directories(
         ${armadillo_SOURCE_DIR}/include
         ${CMAKE_CURRENT_BINARY_DIR}

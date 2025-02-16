@@ -1,1 +1,1 @@
-dehancer_maths_cpp 0.11.0
+dehancer_maths_cpp 0.12.0

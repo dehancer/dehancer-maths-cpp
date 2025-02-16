@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 # Project
 #
 set(PROJECT_LIB dehancer_maths_cpp)
-project(${PROJECT_LIB} VERSION 0.11.0)
+project(${PROJECT_LIB} VERSION 0.12.0)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -215,12 +215,13 @@ if (BUILD_TESTING)
                 SOURCE_DIR "${CMAKE_BINARY_DIR}/googletest-src"
         )
 
-        FetchContent_GetProperties(googletest)
-
-        if(NOT googletest_POPULATED)
-            FetchContent_Populate(googletest)
-            add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-        endif()
+        FetchContent_MakeAvailable(googletest)
+#        FetchContent_GetProperties(googletest)
+#
+#        if(NOT googletest_POPULATED)
+#            FetchContent_Populate(googletest)
+#            add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+#        endif()
 
     endif ()
 
@@ -243,6 +244,16 @@ FetchContent_Declare(
         BINARY_DIR "${CMAKE_BINARY_DIR}/armadillo-build"
 )
 FetchContent_MakeAvailable(armadillo)
+
+FetchContent_GetProperties(armadillo)
+
+# On iOS Armadillo has to be built with ARMA_USE_WRAPPER defined.
+if(armadillo_POPULATED AND CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    file(READ "${armadillo_SOURCE_DIR}/include/armadillo_bits/config.hpp" CONTENT)
+    string(REGEX REPLACE "//[ ]+#define[ ]+ARMA_USE_WRAPPER" "#define ARMA_USE_WRAPPER" CONTENT_MODIFIED "${CONTENT}")
+    file(WRITE "${armadillo_SOURCE_DIR}/include/armadillo_bits/config.hpp" "${CONTENT_MODIFIED}")
+    message(STATUS "Armadillo DODODO: ${armadillo_SOURCE_DIR}")
+endif()
 
 include_directories(
         ${armadillo_SOURCE_DIR}/include
